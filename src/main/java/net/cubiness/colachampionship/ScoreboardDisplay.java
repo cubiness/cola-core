@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -50,7 +51,9 @@ public class ScoreboardDisplay {
     entries.sort(Comparator.comparingInt(Entry::getValue));
     setRow(15, "");
     setRow(14, title);
-    for (int i = 13; i >= 1; i--) {
+    setRow(2, "");
+    setRow(1, ChatColor.YELLOW + "www.cola2.net");
+    for (int i = 13; i >= 3; i--) {
       if (index < entries.size()) {
         Entry<OfflinePlayer, Integer> e = entries.get(index);
         setRow(i, e.getKey().getName() + ": " + e.getValue());
@@ -59,5 +62,9 @@ public class ScoreboardDisplay {
       }
       index++;
     }
+  }
+
+  public void setTitle(String title) {
+    scoreboardObjective.setDisplayName(title);
   }
 }

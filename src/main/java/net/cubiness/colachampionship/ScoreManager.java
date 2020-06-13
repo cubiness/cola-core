@@ -2,8 +2,10 @@ package net.cubiness.colachampionship;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.plugin.Plugin;
 
 public class ScoreManager {
 
@@ -12,9 +14,13 @@ public class ScoreManager {
   private final ScoreboardDisplay display;
   private boolean showingTotal = true;
   private String minigameName = "";
+  private String title = "Cola2 Championship   ";
 
-  public ScoreManager(ScoreboardDisplay display) {
+  public ScoreManager(Plugin plugin, ScoreboardDisplay display) {
     this.display = display;
+    Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this::updateTitle, 5, 5);
+    showTotalScores();
+    Bukkit.getOnlinePlayers().forEach(p -> addTotalScore(p, 20));
   }
 
   public void addMinigameScore(OfflinePlayer p, int amount) {
@@ -41,6 +47,11 @@ public class ScoreManager {
     } else {
       display.show("" + ChatColor.GREEN + ChatColor.BOLD + minigameName + " Points", minigameScores);
     }
+  }
+
+  private void updateTitle() {
+    title = title.charAt(title.length() - 1) + title.substring(0, title.length() - 1);
+    display.setTitle(ChatColor.BOLD + title);
   }
 
   public void showMinigameScores() {

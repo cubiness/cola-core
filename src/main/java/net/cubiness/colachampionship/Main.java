@@ -19,7 +19,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
   public void onEnable() {
     getServer().getPluginManager().registerEvents(this, this);
     display = new ScoreboardDisplay();
-    scoreManager = new ScoreManager(display);
+    scoreManager = new ScoreManager(this, display);
   }
 
   @Override
