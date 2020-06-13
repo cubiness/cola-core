@@ -1,9 +1,9 @@
 package net.cubiness.colachampionship;
 
+import net.cubiness.colachampionship.minigame.Minigame;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -59,5 +59,9 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
       return false;
     }
     return true;
+  }
+
+  public void addMinigame(Minigame minigame) {
+
   }
 }
