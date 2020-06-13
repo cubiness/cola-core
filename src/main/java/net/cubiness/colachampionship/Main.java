@@ -1,6 +1,5 @@
 package net.cubiness.colachampionship;
 
-import net.cubiness.colachampionship.minigame.Minigame;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,7 +31,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         sender.sendMessage(ChatColor.YELLOW + "Setting minigame");
       }
     } else if (label.equals("score")) {
-      if (!sender.hasPermission("cc.minigame")) {
+      if (!sender.hasPermission("cc.score")) {
         sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
       } else {
         if (args.length == 0) {
@@ -45,12 +44,27 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             return true;
           }
           if (!StringUtils.isNumeric(args[2])) {
-            sender.sendMessage(ChatColor.RED + "Value is not a valid number");
+            sender.sendMessage(ChatColor.RED + "`" + args[2] + "` is not a valid number");
             return true;
           }
           int score = Integer.parseInt(args[2]);
-          sender.sendMessage("Adding " + score + " to " + p.getName() + "'s score");
           scoreManager.addTotalScore(p, score);
+        } else {
+          return false;
+        }
+      }
+    } else if (label.equals("showscore")) {
+      if (!sender.hasPermission("cc.score")) {
+        sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
+      } else {
+        if (args.length == 1) {
+          if (args[0].equals("total")) {
+            scoreManager.showTotalScores();
+          } else if (args[0].equals("minigame")) {
+            scoreManager.showMinigameScores();
+          } else {
+            return false;
+          }
         } else {
           return false;
         }
@@ -59,9 +73,5 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
       return false;
     }
     return true;
-  }
-
-  public void addMinigame(Minigame minigame) {
-
   }
 }

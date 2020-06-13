@@ -11,6 +11,10 @@ commands:
     description: Alter score of player in cola championship
     permission: cc.score
     usage: /score <add|remove|set> <username> <value>
+  showscore:
+    description: Shows the minigame or total score for all players
+    permission: cc.score
+    usage: /showscore <total|minigame>
 permissions:
   cc.minigame:
     description: Permission to run /minigame
