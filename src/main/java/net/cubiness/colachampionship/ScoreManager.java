@@ -2,6 +2,7 @@ package net.cubiness.colachampionship;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
 public class ScoreManager {
@@ -35,9 +36,9 @@ public class ScoreManager {
 
   private void update() {
     if (showingTotal) {
-      display.show(totalScores);
+      display.show("" + ChatColor.GREEN + ChatColor.BOLD + "Total Points", totalScores);
     } else {
-      display.show(minigameScores);
+      display.show("" + ChatColor.GREEN + ChatColor.BOLD + "Points", minigameScores);
     }
   }
 

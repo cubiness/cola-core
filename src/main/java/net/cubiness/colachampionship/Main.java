@@ -1,10 +1,13 @@
 package net.cubiness.colachampionship;
 
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -32,11 +35,25 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
       if (!sender.hasPermission("cc.minigame")) {
         sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
       } else {
-        if (args.length != 2) {
+        if (args.length == 0) {
           return false;
         }
-        sender.sendMessage(ChatColor.YELLOW + "Adding to score");
-        scoreManager.addMinigameScore((OfflinePlayer) sender, 10);
+        if (args[0].equals("add") && args.length == 3) {
+          Player p = Bukkit.getPlayer(args[1]);
+          if (p == null) {
+            sender.sendMessage(ChatColor.RED + "Player not found");
+            return true;
+          }
+          if (!StringUtils.isNumeric(args[2])) {
+            sender.sendMessage(ChatColor.RED + "Value is not a valid number");
+            return true;
+          }
+          int score = Integer.parseInt(args[2]);
+          sender.sendMessage("Adding " + score + " to " + p.getName() + "'s score");
+          scoreManager.addTotalScore(p, score);
+        } else {
+          return false;
+        }
       }
     } else {
       return false;

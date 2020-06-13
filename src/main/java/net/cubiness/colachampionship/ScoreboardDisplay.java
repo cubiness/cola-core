@@ -1,7 +1,6 @@
 package net.cubiness.colachampionship;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -45,10 +44,12 @@ public class ScoreboardDisplay {
     scoreboardData.put(row, data);
   }
 
-  public void show(Map<OfflinePlayer, Integer> scores) {
+  public void show(String title, Map<OfflinePlayer, Integer> scores) {
     int index = 0;
     List<Entry<OfflinePlayer, Integer>> entries = new ArrayList<>(scores.entrySet());
     entries.sort(Comparator.comparingInt(Entry::getValue));
+    setRow(15, "");
+    setRow(14, title);
     for (int i = 13; i >= 1; i--) {
       if (index < entries.size()) {
         Entry<OfflinePlayer, Integer> e = entries.get(index);
