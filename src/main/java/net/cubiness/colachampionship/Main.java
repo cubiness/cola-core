@@ -1,6 +1,7 @@
 package net.cubiness.colachampionship;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,12 +10,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener, CommandExecutor {
 
-  private ScoreboardDisplay scoreboardDisplay;
+  private ScoreboardDisplay display;
+  private ScoreManager scoreManager;
 
   @Override
   public void onEnable() {
     getServer().getPluginManager().registerEvents(this, this);
-    scoreboardDisplay = new ScoreboardDisplay();
+    display = new ScoreboardDisplay();
+    scoreManager = new ScoreManager(display);
   }
 
   @Override
@@ -32,8 +35,8 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         if (args.length != 2) {
           return false;
         }
-        sender.sendMessage(ChatColor.YELLOW + "Setting score");
-        scoreboardDisplay.setRow(Integer.parseInt(args[0]), args[1]);
+        sender.sendMessage(ChatColor.YELLOW + "Adding to score");
+        scoreManager.addMinigameScore((OfflinePlayer) sender, 10);
       }
     } else {
       return false;

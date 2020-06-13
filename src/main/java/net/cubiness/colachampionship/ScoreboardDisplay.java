@@ -1,9 +1,12 @@
 package net.cubiness.colachampionship;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -43,8 +46,17 @@ public class ScoreboardDisplay {
   }
 
   public void show(Map<OfflinePlayer, Integer> scores) {
-  }
-
-  public void update() {
+    int index = 0;
+    List<Entry<OfflinePlayer, Integer>> entries = new ArrayList<>(scores.entrySet());
+    entries.sort(Comparator.comparingInt(Entry::getValue));
+    for (int i = 13; i >= 1; i--) {
+      if (index < entries.size()) {
+        Entry<OfflinePlayer, Integer> e = entries.get(index);
+        setRow(i, e.getKey().getName() + ": " + e.getValue());
+      } else {
+        setRow(i, "");
+      }
+      index++;
+    }
   }
 }
