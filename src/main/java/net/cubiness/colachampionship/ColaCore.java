@@ -148,6 +148,22 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
           return false;
         }
       }
+    } else if (label.equals("leave")) {
+      if (!sender.hasPermission("cc.leave")) {
+        sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
+      } else {
+        if (args.length == 0) {
+          if (sender instanceof Player) {
+            if (!minigames.onPlayerLeaveMinigame((Player) sender)) {
+              sender.sendMessage(ChatColor.RED + "You are not in a minigame!");
+            }
+          } else {
+            sender.sendMessage(ChatColor.RED + "You must be a player to run this command!");
+          }
+        } else {
+          return false;
+        }
+      }
     } else {
       return false;
     }

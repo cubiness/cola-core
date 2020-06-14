@@ -19,6 +19,10 @@ commands:
     description: Puts player into the lobby of a minigame
     permission: cc.join
     usage: /join <minigame>
+  leave:
+    description: Removes the player from whatever minigame they were in, if any
+    permission: cc.leave
+    usage: /leave
   updatescoreboard:
     description: Fixes scoreboard
     permission: cc.updatescoreboard
@@ -30,9 +34,12 @@ permissions:
   cc.score:
     description: Permission to alter players' score
     default: op
-  cc.updatescorebord:
-    description: Permission to fix scoreboard
-    default: true
   cc.join:
     description: Permission to join minigame
+    default: true
+  cc.leave:
+    description: Permission to leave minigame
+    default: true
+  cc.updatescorebord:
+    description: Permission to fix scoreboard
     default: true

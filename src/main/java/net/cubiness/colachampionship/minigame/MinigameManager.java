@@ -58,8 +58,20 @@ public class MinigameManager {
     minigames.get(minigameName).addPlayer(p);
   }
 
-  public void onPlayerLeave(Player p) {
-    players.get(p).leaveCurrentMinigame();
+  /**
+   * Called when a player leaves a minigame
+   * @param p The player
+   * @return true if the player was in a minigame, false if otherwise
+   */
+  public boolean onPlayerLeaveMinigame(Player p) {
+    if (players.get(p) == null) {
+      players.put(p, new MinigamePlayer(p));
+    }
+    return players.get(p).leaveCurrentMinigame();
+  }
+
+  public void onPlayerLeaveServer(Player p) {
+    onPlayerLeaveMinigame(p);
     players.remove(p);
   }
 
