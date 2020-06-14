@@ -46,9 +46,9 @@ public class ScoreboardDisplay {
     scoreboardData.put(row, data);
   }
 
-  public void show(String title, Map<OfflinePlayer, Integer> scores) {
+  public void show(String title, Map<String, Integer> scores) {
     int index = 0;
-    List<Entry<OfflinePlayer, Integer>> entries = new ArrayList<>(scores.entrySet());
+    List<Entry<String, Integer>> entries = new ArrayList<>(scores.entrySet());
     entries.sort(Comparator.comparingInt(Entry::getValue));
     setRow(15, "");
     setRow(14, title);
@@ -56,8 +56,8 @@ public class ScoreboardDisplay {
     setRow(1, ChatColor.YELLOW + "www.cola2.net");
     for (int i = 13; i >= 3; i--) {
       if (index < entries.size()) {
-        Entry<OfflinePlayer, Integer> e = entries.get(index);
-        setRow(i, e.getKey().getName() + ": " + e.getValue());
+        Entry<String, Integer> e = entries.get(index);
+        setRow(i, e.getKey() + ": " + e.getValue());
       } else {
         setRow(i, "");
       }

@@ -33,7 +33,7 @@ public class MinigameManager {
     scoreManager.setMinigameName(game.getName());
   }
 
-  public void addScore(Player p, int amount) {
+  public void addScore(String p, int amount) {
     scoreManager.addMinigameScore(p, amount);
   }
 

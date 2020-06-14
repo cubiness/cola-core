@@ -10,8 +10,8 @@ import org.bukkit.plugin.Plugin;
 
 public class ScoreManager {
 
-  private final Map<OfflinePlayer, Integer> minigameScores = new HashMap<>();
-  private final Map<OfflinePlayer, Integer> totalScores = new HashMap<>();
+  private final Map<String, Integer> minigameScores = new HashMap<>();
+  private final Map<String, Integer> totalScores = new HashMap<>();
   private final ScoreboardDisplay display;
   private boolean showingTotal = true;
   private String minigameName = "";
@@ -21,10 +21,9 @@ public class ScoreManager {
     this.display = display;
     Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this::updateTitle, 5, 5);
     showTotalScores();
-    Bukkit.getOnlinePlayers().forEach(p -> addTotalScore(p, 20));
   }
 
-  public void addMinigameScore(OfflinePlayer p, int amount) {
+  public void addMinigameScore(String p, int amount) {
     if (minigameScores.containsKey(p)) {
       minigameScores.put(p, minigameScores.get(p) + amount);
     } else {
@@ -33,7 +32,7 @@ public class ScoreManager {
     update();
   }
 
-  public void addTotalScore(OfflinePlayer p, int amount) {
+  public void addTotalScore(String p, int amount) {
     if (totalScores.containsKey(p)) {
       totalScores.put(p, totalScores.get(p) + amount);
     } else {
@@ -42,7 +41,7 @@ public class ScoreManager {
     update();
   }
 
-  public void setTotalScore(Player p, int amount) {
+  public void setTotalScore(String p, int amount) {
     totalScores.put(p, amount);
     update();
   }

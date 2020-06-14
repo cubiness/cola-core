@@ -50,7 +50,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             return true;
           }
           int score = Integer.parseInt(args[2]);
-          scoreManager.addTotalScore(p, score);
+          scoreManager.addTotalScore(p.getName(), score);
         } else if (args[0].equals("remove") && args.length == 3) {
           Player p = Bukkit.getPlayer(args[1]);
           if (p == null) {
@@ -62,7 +62,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             return true;
           }
           int score = Integer.parseInt(args[2]);
-          scoreManager.addTotalScore(p, -score);
+          scoreManager.addTotalScore(p.getName(), -score);
         } else if (args[0].equals("set") && args.length == 3) {
           Player p = Bukkit.getPlayer(args[1]);
           if (p == null) {
@@ -74,7 +74,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             return true;
           }
           int score = Integer.parseInt(args[2]);
-          scoreManager.setTotalScore(p, score);
+          scoreManager.setTotalScore(p.getName(), score);
         } else {
           return false;
         }

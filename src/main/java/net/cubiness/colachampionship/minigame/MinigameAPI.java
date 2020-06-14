@@ -1,7 +1,5 @@
 package net.cubiness.colachampionship.minigame;
 
-import org.bukkit.entity.Player;
-
 public class MinigameAPI {
 
   private final MinigameManager manager;
@@ -14,7 +12,7 @@ public class MinigameAPI {
     manager.registerMinigame(minigame);
   }
 
-  public void addScore(Player p, int amount) {
+  public void addScore(String p, int amount) {
     manager.addScore(p, amount);
   }
 
