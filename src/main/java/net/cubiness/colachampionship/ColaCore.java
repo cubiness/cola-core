@@ -40,17 +40,14 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
       } else {
         if (args.length == 0) {
           return false;
-        } else if (args[0].equals("set") && args.length == 2) {
-          if (minigames.hasMinigame(args[1])) {
-            sender.sendMessage(ChatColor.YELLOW + "Setting minigame to " + args[1]);
-            minigames.select(args[1]);
+        } else if (args[0].equals("start") && args.length == 2) {
+          if (minigames.running()) {
+            sender.sendMessage(ChatColor.RED + "Theres is already a minigame in progress!");
+          } else if (minigames.hasMinigame(args[1])) {
+            minigames.start(args[1]);
           } else {
             sender.sendMessage(ChatColor.RED + "Minigame " + args[1] + " has not been registered!");
           }
-        } else if (args[0].equals("start") && args.length == 1) {
-          sender.sendMessage(ChatColor.YELLOW + "Starting minigame");
-        } else if (args[0].equals("start") && args.length == 2) {
-          sender.sendMessage(ChatColor.YELLOW + "Starting minigame " + args[1]);
         } else if (args[0].equals("stop") && args.length == 1) {
           sender.sendMessage(ChatColor.YELLOW + "Stopping minigame");
         } else {

@@ -6,15 +6,15 @@ commands:
   minigame:
     description: Set cola championship minigame
     permission: cc.minigame
-    usage: /minigame <set|start|stop> [minigame]
+    usage: /minigame (start <minigame> | stop)
   score:
     description: Alter score of player in cola championship
     permission: cc.score
-    usage: /score <add|remove|set> <username> <value>
+    usage: /score <add | remove | set> <username> <value>
   showscore:
     description: Shows the minigame or total score for all players
     permission: cc.score
-    usage: /showscore <total|minigame>
+    usage: /showscore <total | minigame>
   updatescoreboard:
     description: Fixes scoreboard
     permission: cc.updatescoreboard

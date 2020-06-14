@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.cubiness.colachampionship.ScoreManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 public class MinigameManager {
@@ -11,8 +12,7 @@ public class MinigameManager {
   private final Map<String, Minigame> minigames = new HashMap<>();
   private final ScoreManager scoreManager;
   private final MinigameAPI api = new MinigameAPI(this);
-  private Minigame selectedMinigame;
-  private boolean runningGame = false;
+  private Minigame runningGame;
 
   public MinigameManager(ScoreManager scoreManager) {
     this.scoreManager = scoreManager;
@@ -20,22 +20,31 @@ public class MinigameManager {
 
   public void reset() {
     minigames.clear();
-    selectedMinigame = null;
-    runningGame = false;
+    runningGame = null;
   }
 
   public void clearScores() {
     scoreManager.clearMinigameScores();
   }
 
-  public void start() {
-    if (runningGame) {
-      throw new RuntimeException("Minigame " + selectedMinigame.getName() + " is already running!");
+  public void start(String minigameName) {
+    if (runningGame != null) {
+      throw new RuntimeException("Minigame " + runningGame.getName() + " is already running!");
     }
+    if (!minigames.containsKey(minigameName)) {
+      throw new RuntimeException("Minigame " + minigameName + " has not been registered!");
+    }
+    Minigame game = minigames.get(minigameName);
+    String error = game.checkStart();
+    if (error != null) {
+      Bukkit.broadcastMessage(ChatColor.RED + error);
+      return;
+    }
+    Bukkit.broadcastMessage(ChatColor.YELLOW + minigameName + " is starting!");
+    runningGame = game;
+    scoreManager.setMinigameName(runningGame.getName());
     scoreManager.showMinigameScores();
-    selectedMinigame.start();
-    runningGame = true;
-    scoreManager.setMinigameName(selectedMinigame.getName());
+    runningGame.start();
   }
 
   public void addScore(String p, int amount) {
@@ -55,11 +64,11 @@ public class MinigameManager {
   }
 
   public void finish(Minigame game) {
-    if (runningGame && selectedMinigame == game) {
-      runningGame = false;
-      selectedMinigame = null;
+    Bukkit.broadcastMessage(ChatColor.YELLOW + game.getName() + " has ended!");
+    if (runningGame == game) {
+      runningGame = null;
     } else {
-      throw new RuntimeException("Minigame " + selectedMinigame.getName() + " is not running!");
+      throw new RuntimeException("Minigame " + game.getName() + " is not running!");
     }
   }
 
@@ -71,13 +80,7 @@ public class MinigameManager {
     return minigames.containsKey(name);
   }
 
-  public void select(String name) {
-    if (runningGame) {
-      throw new RuntimeException("Minigame is already running!");
-    }
-    if (!minigames.containsKey(name)) {
-      throw new RuntimeException("Minigame " + name + " has not been registered!");
-    }
-    selectedMinigame = minigames.get(name);
+  public boolean running() {
+    return runningGame != null;
   }
 }

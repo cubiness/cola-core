@@ -3,14 +3,15 @@ package net.cubiness.colachampionship.minigame;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public abstract class Minigame {
 
   protected final MinigameAPI api;
-  private boolean running = false;
   private final List<Player> players = new ArrayList<>();
+  private boolean running = false;
 
   public Minigame(MinigameAPI api) {
     this.api = api;
@@ -29,11 +30,17 @@ public abstract class Minigame {
     onPlayerLeave(p);
   }
 
+  /**
+   * Called from ColaCore when a minigame needs to start
+   */
   public final void start() {
     running = true;
     onStart();
   }
 
+  /***
+   * Called from ColaCore when a minigame needs to stop
+   */
   public final void stop() {
     running = false;
     forceStop();
@@ -47,6 +54,13 @@ public abstract class Minigame {
     return players.iterator();
   }
 
+  public String checkStart() {
+    if (players.size() < getMinimumPlayers()) {
+      return getName() + " needs at least " + getMinimumPlayers() + " players to start!";
+    }
+    return null;
+  }
+
   protected abstract void onPlayerJoin(Player p);
 
   protected abstract void onPlayerLeave(Player p);
@@ -58,4 +72,6 @@ public abstract class Minigame {
   public abstract Location getLobby();
 
   public abstract String getName();
+
+  public abstract int getMinimumPlayers();
 }
