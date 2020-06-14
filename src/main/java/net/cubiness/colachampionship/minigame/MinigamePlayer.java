@@ -20,8 +20,8 @@ public class MinigamePlayer {
       currentMinigame = minigame;
       minigame.addPlayer(player);
     } else {
-      player.sendMessage(
-          "Cannot join " + minigame.getName() + ", as you are already in " + currentMinigame
+      throw new RuntimeException(
+          "Player is already in " + currentMinigame.getName() + ", cannnot join " + minigame
               .getName());
     }
   }
