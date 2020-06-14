@@ -1,5 +1,8 @@
 package net.cubiness.colachampionship;
 
+import java.util.Arrays;
+import java.util.Collections;
+import net.cubiness.colachampionship.commands.TabCompleteManager;
 import net.cubiness.colachampionship.minigame.MinigameAPI;
 import net.cubiness.colachampionship.minigame.MinigameManager;
 import org.apache.commons.lang.StringUtils;
@@ -19,6 +22,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
   private ScoreboardDisplay display;
   private ScoreManager scoreManager;
   private MinigameManager minigames;
+  private TabCompleteManager tabComplete;
 
   @Override
   public void onEnable() {
@@ -26,6 +30,14 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     display = new ScoreboardDisplay();
     scoreManager = new ScoreManager(this, display);
     minigames = new MinigameManager(scoreManager);
+    tabComplete = new TabCompleteManager();
+    getCommand("minigame").setTabCompleter(tabComplete);
+    getCommand("score").setTabCompleter(tabComplete);
+    getCommand("showscore").setTabCompleter(tabComplete);
+    getCommand("join").setTabCompleter(tabComplete);
+    getCommand("leave").setTabCompleter(tabComplete);
+    getCommand("updatescoreboard").setTabCompleter(tabComplete);
+    tabComplete.addCompletion("minigame", Collections.emptyList(), Arrays.asList("start", "stop"));
   }
 
   public MinigameAPI getAPI() {
