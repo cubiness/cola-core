@@ -1,5 +1,6 @@
 package net.cubiness.colachampionship;
 
+import net.cubiness.colachampionship.minigame.MinigameAPI;
 import net.cubiness.colachampionship.minigame.MinigameManager;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -27,8 +28,8 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     minigames = new MinigameManager(scoreManager);
   }
 
-  public MinigameManager getMinigames() {
-    return minigames;
+  public MinigameAPI getAPI() {
+    return minigames.getAPI();
   }
 
   @Override
@@ -40,13 +41,20 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
         if (args.length == 0) {
           return false;
         } else if (args[0].equals("set") && args.length == 2) {
-          sender.sendMessage(ChatColor.YELLOW + "Setting minigame to " + args[1]);
+          if (minigames.hasMinigame(args[1])) {
+            sender.sendMessage(ChatColor.YELLOW + "Setting minigame to " + args[1]);
+            minigames.select(args[1]);
+          } else {
+            sender.sendMessage(ChatColor.RED + "Minigame " + args[1] + " has not been registered!");
+          }
         } else if (args[0].equals("start") && args.length == 1) {
           sender.sendMessage(ChatColor.YELLOW + "Starting minigame");
         } else if (args[0].equals("start") && args.length == 2) {
           sender.sendMessage(ChatColor.YELLOW + "Starting minigame " + args[1]);
         } else if (args[0].equals("stop") && args.length == 1) {
           sender.sendMessage(ChatColor.YELLOW + "Stopping minigame");
+        } else {
+          return false;
         }
       }
     } else if (label.equals("score")) {
@@ -126,6 +134,11 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
       return false;
     }
     return true;
+  }
+
+  @Override
+  public void onDisable() {
+    minigames.reset();
   }
 
   @EventHandler
