@@ -15,6 +15,10 @@ commands:
     description: Shows the minigame or total score for all players
     permission: cc.score
     usage: /showscore <total | minigame>
+  join:
+    description: Puts player into the lobby of a minigame
+    permission: cc.join
+    usage: /join <minigame>
   updatescoreboard:
     description: Fixes scoreboard
     permission: cc.updatescoreboard
@@ -28,4 +32,7 @@ permissions:
     default: op
   cc.updatescorebord:
     description: Permission to fix scoreboard
+    default: true
+  cc.join:
+    description: Permission to join minigame
     default: true

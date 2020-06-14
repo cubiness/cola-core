@@ -27,6 +27,20 @@ public class MinigameManager {
     scoreManager.clearMinigameScores();
   }
 
+  public void addPlayer(Player p, String minigameName) {
+    if (runningGame != null) {
+      throw new RuntimeException("Minigame " + runningGame.getName() + " is already running!");
+    }
+    if (!minigames.containsKey(minigameName)) {
+      throw new RuntimeException("Minigame " + minigameName + " has not been registered!");
+    }
+    minigames.get(minigameName).addPlayer(p);
+  }
+
+  public void onPlayerLeave(Player p) {
+    minigames.forEach((name, game) -> game.removePlayer(p));
+  }
+
   public void start(String minigameName) {
     if (runningGame != null) {
       throw new RuntimeException("Minigame " + runningGame.getName() + " is already running!");
