@@ -3,13 +3,15 @@ package net.cubiness.colachampionship.minigame;
 import java.util.HashMap;
 import java.util.Map;
 import net.cubiness.colachampionship.ScoreManager;
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 
 public class MinigameManager {
 
   private final Map<String, Minigame> minigames = new HashMap<>();
   private final ScoreManager scoreManager;
   private Minigame runningGame;
+  private final MinigameAPI api = new MinigameAPI(this);
 
   public MinigameManager(ScoreManager scoreManager) {
     this.scoreManager = scoreManager;
@@ -37,6 +39,10 @@ public class MinigameManager {
     scoreManager.addMinigameScore(p, amount);
   }
 
+  public MinigameAPI getAPI() {
+    return api;
+  }
+
   public void registerMinigame(Minigame minigame) {
     if (minigames.containsKey(minigame.getName())) {
       throw new RuntimeException(
@@ -50,5 +56,9 @@ public class MinigameManager {
       throw new RuntimeException("Minigame " + runningGame.getName() + " is not running!");
     }
     runningGame = null;
+  }
+
+  public Location getSpawn() {
+    return new Location(Bukkit.getWorld("world"), 0, 201, 0);
   }
 }

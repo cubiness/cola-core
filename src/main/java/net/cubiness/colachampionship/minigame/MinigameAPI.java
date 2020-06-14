@@ -1,5 +1,7 @@
 package net.cubiness.colachampionship.minigame;
 
+import org.bukkit.Location;
+
 public class MinigameAPI {
 
   private final MinigameManager manager;
@@ -18,5 +20,9 @@ public class MinigameAPI {
 
   public void finish(Minigame game) {
     manager.finish(game);
+  }
+
+  public Location getSpawn() {
+    return manager.getSpawn();
   }
 }

@@ -1,5 +1,6 @@
 package net.cubiness.colachampionship;
 
+import net.cubiness.colachampionship.minigame.MinigameManager;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,16 +13,22 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main extends JavaPlugin implements Listener, CommandExecutor {
+public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
 
   private ScoreboardDisplay display;
   private ScoreManager scoreManager;
+  private MinigameManager minigames;
 
   @Override
   public void onEnable() {
     getServer().getPluginManager().registerEvents(this, this);
     display = new ScoreboardDisplay();
     scoreManager = new ScoreManager(this, display);
+    minigames = new MinigameManager(scoreManager);
+  }
+
+  public MinigameManager getMinigames() {
+    return minigames;
   }
 
   @Override
@@ -30,7 +37,17 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
       if (!sender.hasPermission("cc.minigame")) {
         sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
       } else {
-        sender.sendMessage(ChatColor.YELLOW + "Setting minigame");
+        if (args.length == 0) {
+          return false;
+        } else if (args[0].equals("set") && args.length == 2) {
+          sender.sendMessage(ChatColor.YELLOW + "Setting minigame to " + args[1]);
+        } else if (args[0].equals("start") && args.length == 1) {
+          sender.sendMessage(ChatColor.YELLOW + "Starting minigame");
+        } else if (args[0].equals("start") && args.length == 2) {
+          sender.sendMessage(ChatColor.YELLOW + "Starting minigame " + args[1]);
+        } else if (args[0].equals("stop") && args.length == 1) {
+          sender.sendMessage(ChatColor.YELLOW + "Stopping minigame");
+        }
       }
     } else if (label.equals("score")) {
       if (!sender.hasPermission("cc.score")) {
