@@ -5,6 +5,7 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class ScoreManager {
@@ -38,6 +39,11 @@ public class ScoreManager {
     } else {
       totalScores.put(p, amount);
     }
+    update();
+  }
+
+  public void setTotalScore(Player p, int amount) {
+    totalScores.put(p, amount);
     update();
   }
 

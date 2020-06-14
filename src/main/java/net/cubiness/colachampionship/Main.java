@@ -51,6 +51,30 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
           }
           int score = Integer.parseInt(args[2]);
           scoreManager.addTotalScore(p, score);
+        } else if (args[0].equals("remove") && args.length == 3) {
+          Player p = Bukkit.getPlayer(args[1]);
+          if (p == null) {
+            sender.sendMessage(ChatColor.RED + "Player not found");
+            return true;
+          }
+          if (!StringUtils.isNumeric(args[2])) {
+            sender.sendMessage(ChatColor.RED + "`" + args[2] + "` is not a valid number");
+            return true;
+          }
+          int score = Integer.parseInt(args[2]);
+          scoreManager.addTotalScore(p, -score);
+        } else if (args[0].equals("set") && args.length == 3) {
+          Player p = Bukkit.getPlayer(args[1]);
+          if (p == null) {
+            sender.sendMessage(ChatColor.RED + "Player not found");
+            return true;
+          }
+          if (!StringUtils.isNumeric(args[2])) {
+            sender.sendMessage(ChatColor.RED + "`" + args[2] + "` is not a valid number");
+            return true;
+          }
+          int score = Integer.parseInt(args[2]);
+          scoreManager.setTotalScore(p, score);
         } else {
           return false;
         }
