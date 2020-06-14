@@ -49,9 +49,13 @@ public class ScoreManager {
   private void update() {
     if (showingTotal) {
       display.show("" + ChatColor.GREEN + ChatColor.BOLD + "Total Points", totalScores);
+      saveTotals();
     } else {
       display.show("" + ChatColor.GREEN + ChatColor.BOLD + minigameName + " Points", minigameScores);
     }
+  }
+
+  private void saveTotals() {
   }
 
   private void updateTitle() {

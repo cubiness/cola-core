@@ -1,7 +1,10 @@
 package net.cubiness.colachampionship.minigame;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import net.cubiness.colachampionship.ColaCore;
 import net.cubiness.colachampionship.ScoreManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,9 +17,11 @@ public class MinigameManager {
   private final ScoreManager scoreManager;
   private final MinigameAPI api = new MinigameAPI(this);
   private final Map<Player, MinigamePlayer> players = new HashMap<>();
+  private final ColaCore cola;
   private Minigame runningGame;
 
-  public MinigameManager(ScoreManager scoreManager) {
+  public MinigameManager(ColaCore cola, ScoreManager scoreManager) {
+    this.cola = cola;
     this.scoreManager = scoreManager;
   }
 
@@ -60,6 +65,7 @@ public class MinigameManager {
 
   /**
    * Called when a player leaves a minigame
+   *
    * @param p The player
    * @return true if the player was in a minigame, false if otherwise
    */
@@ -109,6 +115,7 @@ public class MinigameManager {
           "Minigame " + minigame.getName() + " has already been registered!");
     }
     minigames.put(minigame.getName(), minigame);
+    cola.updateTabComplete(true, false);
   }
 
   public void finish(Minigame game) {
@@ -131,5 +138,9 @@ public class MinigameManager {
 
   public boolean running() {
     return runningGame != null;
+  }
+
+  public List<String> getMinigameList() {
+    return new ArrayList<>(minigames.keySet());
   }
 }

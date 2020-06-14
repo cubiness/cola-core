@@ -1,12 +1,10 @@
 package net.cubiness.colachampionship.commands;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -49,8 +47,9 @@ public class TabCompleteManager implements TabCompleter {
       }
       List<String> options = commandCompletions.get(prefix);
       String partialCommand = strings[strings.length - 1];
-      return options.stream().filter(i -> i.startsWith(partialCommand)).collect(
-          Collectors.toList());
+      return options.stream()
+          .filter(i -> i.startsWith(partialCommand))
+          .collect(Collectors.toList());
     }
     return new ArrayList<>();
   }

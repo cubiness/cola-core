@@ -2,6 +2,7 @@ package net.cubiness.colachampionship;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collectors;
 import net.cubiness.colachampionship.commands.TabCompleteManager;
 import net.cubiness.colachampionship.minigame.MinigameAPI;
 import net.cubiness.colachampionship.minigame.MinigameManager;
@@ -11,6 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,7 +31,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     getServer().getPluginManager().registerEvents(this, this);
     display = new ScoreboardDisplay();
     scoreManager = new ScoreManager(this, display);
-    minigames = new MinigameManager(scoreManager);
+    minigames = new MinigameManager(this, scoreManager);
     tabComplete = new TabCompleteManager();
     getCommand("minigame").setTabCompleter(tabComplete);
     getCommand("score").setTabCompleter(tabComplete);
@@ -37,7 +39,41 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("join").setTabCompleter(tabComplete);
     getCommand("leave").setTabCompleter(tabComplete);
     getCommand("updatescoreboard").setTabCompleter(tabComplete);
-    tabComplete.addCompletion("minigame", Collections.emptyList(), Arrays.asList("start", "stop"));
+    tabComplete.addCompletion("minigame",
+        Collections.emptyList(),
+        Arrays.asList("start", "stop"));
+    tabComplete.addCompletion("score",
+        Collections.emptyList(),
+        Arrays.asList("set", "add", "remove"));
+    tabComplete.addCompletion("showscore",
+        Collections.emptyList(),
+        Arrays.asList("total", "minigame"));
+    updateTabComplete(false, true);
+  }
+
+  public void updateTabComplete(boolean newMinigames, boolean newPlayers) {
+    if (newMinigames) {
+      tabComplete.addCompletion("minigame",
+          Arrays.asList("start"),
+          minigames.getMinigameList());
+      tabComplete.addCompletion("join",
+          Collections.emptyList(),
+          minigames.getMinigameList());
+      tabComplete.addCompletion("join",
+          Collections.emptyList(),
+          minigames.getMinigameList());
+    }
+    if (newPlayers) {
+      tabComplete.addCompletion("score",
+          Arrays.asList("set"),
+          Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
+      tabComplete.addCompletion("score",
+          Arrays.asList("add"),
+          Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
+      tabComplete.addCompletion("score",
+          Arrays.asList("remove"),
+          Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
+    }
   }
 
   public MinigameAPI getAPI() {
