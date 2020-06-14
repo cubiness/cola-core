@@ -44,9 +44,9 @@ public abstract class Minigame {
   /***
    * Called from ColaCore when a minigame needs to stop
    */
-  public final void stop() {
+  public final void forceStop() {
     running = false;
-    forceStop();
+    onForceStop();
   }
 
   protected final boolean isRunning() {
@@ -77,7 +77,7 @@ public abstract class Minigame {
 
   public abstract void onStart();
 
-  public abstract void forceStop();
+  public abstract void onForceStop();
 
   public abstract Location getLobby();
 

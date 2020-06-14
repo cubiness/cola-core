@@ -13,15 +13,22 @@ public class MinigameManager {
   private final Map<String, Minigame> minigames = new HashMap<>();
   private final ScoreManager scoreManager;
   private final MinigameAPI api = new MinigameAPI(this);
+  private final Map<Player, MinigamePlayer> players = new HashMap<>();
   private Minigame runningGame;
-  private Map<Player, MinigamePlayer> players = new HashMap<>();
 
   public MinigameManager(ScoreManager scoreManager) {
     this.scoreManager = scoreManager;
   }
 
+  /***
+   * Called when the entire ColaCore is being reset. All minigames should be killed if this happens
+   */
   public void reset() {
+    if (runningGame != null) {
+      runningGame.forceStop();
+    }
     minigames.clear();
+    players.clear();
     runningGame = null;
   }
 
