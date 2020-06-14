@@ -6,6 +6,7 @@ import net.cubiness.colachampionship.ScoreManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class MinigameManager {
 
@@ -13,6 +14,7 @@ public class MinigameManager {
   private final ScoreManager scoreManager;
   private final MinigameAPI api = new MinigameAPI(this);
   private Minigame runningGame;
+  private Map<Player, MinigamePlayer> players = new HashMap<>();
 
   public MinigameManager(ScoreManager scoreManager) {
     this.scoreManager = scoreManager;
@@ -34,11 +36,24 @@ public class MinigameManager {
     if (!minigames.containsKey(minigameName)) {
       throw new RuntimeException("Minigame " + minigameName + " has not been registered!");
     }
+    MinigamePlayer player = players.get(p);
+    if (player == null) {
+      player = new MinigamePlayer(p);
+      players.put(p, player);
+    }
+    if (player.getCurrentMinigame() != null) {
+      p.sendMessage(ChatColor.RED + "You are already in " + player.getCurrentMinigame().getName());
+      p.sendMessage(ChatColor.RED + "Please leave this game first with /lobby or /leave");
+      return;
+    }
+    Minigame game = minigames.get(minigameName);
+    player.setCurrentMinigame(game);
     minigames.get(minigameName).addPlayer(p);
   }
 
   public void onPlayerLeave(Player p) {
-    minigames.forEach((name, game) -> game.removePlayer(p));
+    players.get(p).leaveCurrentMinigame();
+    players.remove(p);
   }
 
   public void start(String minigameName) {
