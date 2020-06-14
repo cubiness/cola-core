@@ -19,15 +19,19 @@ public abstract class Minigame {
   }
 
   public final void addPlayer(Player p) {
-    players.add(p);
-    p.teleport(getLobby());
-    onPlayerJoin(p);
+    if (!players.contains(p)) {
+      players.add(p);
+      p.teleport(getLobby());
+      onPlayerJoin(p);
+    }
   }
 
   public final void removePlayer(Player p) {
-    players.remove(p);
-    p.teleport(api.getSpawn());
-    onPlayerLeave(p);
+    if (players.contains(p)) {
+      players.remove(p);
+      p.teleport(api.getSpawn());
+      onPlayerLeave(p);
+    }
   }
 
   /**
@@ -54,12 +58,19 @@ public abstract class Minigame {
     return players.iterator();
   }
 
-  public String checkStart() {
+  public final String checkStart() {
     if (players.size() < getMinimumPlayers()) {
       return getName() + " needs at least " + getMinimumPlayers() + " players to start!";
     }
     return null;
   }
+
+  public final void reset() {
+    players.clear();
+    onReset();
+  }
+
+  protected abstract void onReset();
 
   protected abstract void onPlayerJoin(Player p);
 

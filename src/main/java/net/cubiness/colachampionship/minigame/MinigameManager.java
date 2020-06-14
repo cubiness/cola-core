@@ -78,8 +78,9 @@ public class MinigameManager {
   }
 
   public void finish(Minigame game) {
-    Bukkit.broadcastMessage(ChatColor.YELLOW + game.getName() + " has ended!");
     if (runningGame == game) {
+      Bukkit.broadcastMessage(ChatColor.YELLOW + game.getName() + " has ended!");
+      runningGame.reset();
       runningGame = null;
     } else {
       throw new RuntimeException("Minigame " + game.getName() + " is not running!");
