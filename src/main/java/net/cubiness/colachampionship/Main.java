@@ -7,7 +7,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener, CommandExecutor {
@@ -69,9 +71,24 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
           return false;
         }
       }
+    } else if (label.equals("updatescoreboard")) {
+      if (!sender.hasPermission("cc.updatescorebord")) {
+        sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
+      } else {
+        if (args.length == 0) {
+          display.showScoreboard((Player) sender);
+        } else {
+          return false;
+        }
+      }
     } else {
       return false;
     }
     return true;
+  }
+
+  @EventHandler
+  public void onPlayerJoin(PlayerJoinEvent e) {
+    display.showScoreboard(e.getPlayer());
   }
 }

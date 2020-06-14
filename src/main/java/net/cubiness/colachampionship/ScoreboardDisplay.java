@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -66,5 +67,9 @@ public class ScoreboardDisplay {
 
   public void setTitle(String title) {
     scoreboardObjective.setDisplayName(title);
+  }
+
+  public void showScoreboard(Player sender) {
+    sender.setScoreboard(scoreboard);
   }
 }
