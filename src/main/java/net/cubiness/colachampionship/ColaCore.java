@@ -26,6 +26,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
   private MinigameManager minigames;
   private TabCompleteManager tabComplete;
 
+
   @Override
   public void onEnable() {
     getServer().getPluginManager().registerEvents(this, this);
@@ -66,13 +67,16 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     if (newPlayers) {
       tabComplete.addCompletion("score",
           Arrays.asList("set"),
-          Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
+          Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
+              .collect(Collectors.toList()));
       tabComplete.addCompletion("score",
           Arrays.asList("add"),
-          Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
+          Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
+              .collect(Collectors.toList()));
       tabComplete.addCompletion("score",
           Arrays.asList("remove"),
-          Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
+          Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
+              .collect(Collectors.toList()));
     }
   }
 
@@ -97,7 +101,12 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
             sender.sendMessage(ChatColor.RED + "Minigame " + args[1] + " has not been registered!");
           }
         } else if (args[0].equals("stop") && args.length == 1) {
-          sender.sendMessage(ChatColor.YELLOW + "Stopping minigame");
+          if (minigames.running()) {
+            sender.sendMessage(ChatColor.YELLOW + "Stopping minigame");
+            minigames.stop();
+          } else {
+            sender.sendMessage(ChatColor.RED + "There is not a minigame running!");
+          }
         } else {
           return false;
         }

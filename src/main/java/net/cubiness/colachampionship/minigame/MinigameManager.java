@@ -101,6 +101,19 @@ public class MinigameManager {
     runningGame.start();
   }
 
+  public void stop() {
+    if (runningGame == null) {
+      throw new RuntimeException("No minigame is running!");
+    }
+    runningGame.forceStop();
+    for (MinigamePlayer p : players.values()) {
+      if (p.getCurrentMinigame() == runningGame) {
+        p.leaveCurrentMinigame();
+      }
+    }
+    runningGame = null;
+  }
+
   public void addScore(String p, int amount) {
     scoreManager.addMinigameScore(p, amount);
   }
