@@ -19,6 +19,10 @@ commands:
     description: Puts player into the lobby of a minigame
     permission: cc.join
     usage: /join <minigame>
+  joinall:
+    description: Puts all players into a minigame
+    permission: cc.joinall
+    usage: /joinall <minigame>
   leave:
     description: Removes the player from whatever minigame they were in, if any
     permission: cc.leave
@@ -37,6 +41,9 @@ permissions:
   cc.join:
     description: Permission to join minigame
     default: true
+  cc.joinall:
+    description: Permission to send all players minigame
+    default: op
   cc.leave:
     description: Permission to leave minigame
     default: true
