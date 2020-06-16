@@ -65,6 +65,9 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
       tabComplete.addCompletion("join",
           Collections.emptyList(),
           minigames.getMinigameList());
+      tabComplete.addCompletion("joinall",
+          Collections.emptyList(),
+          minigames.getMinigameList());
     }
     if (newPlayers) {
       tabComplete.addCompletion("score",
