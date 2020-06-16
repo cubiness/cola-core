@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.cubiness.colachampionship.ColaCore;
-import net.cubiness.colachampionship.ScoreManager;
+import net.cubiness.colachampionship.scoreboard.ScoreManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -37,8 +37,8 @@ public class MinigameManager {
     runningGame = null;
   }
 
-  public void clearScores() {
-    scoreManager.clearMinigameScores();
+  public void resetMinigame() {
+    scoreManager.clearMinigameSections();
   }
 
   public void addPlayer(Player p, String minigameName) {
@@ -114,10 +114,6 @@ public class MinigameManager {
     runningGame = null;
   }
 
-  public void addScore(String p, int amount) {
-    scoreManager.addMinigameScore(p, amount);
-  }
-
   public MinigameAPI getAPI() {
     return api;
   }
@@ -155,5 +151,9 @@ public class MinigameManager {
 
   public List<String> getMinigameList() {
     return new ArrayList<>(minigames.keySet());
+  }
+
+  public ScoreManager getScoreboard() {
+    return scoreManager;
   }
 }

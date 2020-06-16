@@ -1,5 +1,6 @@
 package net.cubiness.colachampionship.minigame;
 
+import net.cubiness.colachampionship.scoreboard.section.ScoreboardSection;
 import org.bukkit.Location;
 
 public class MinigameAPI {
@@ -14,8 +15,12 @@ public class MinigameAPI {
     manager.registerMinigame(minigame);
   }
 
-  public void addScore(String p, int amount) {
-    manager.addScore(p, amount);
+  public void addSection(ScoreboardSection section) {
+    manager.getScoreboard().addMinigameSection(section);
+  }
+
+  public void updateScoreboard() {
+    manager.getScoreboard().update();
   }
 
   public void finish(Minigame game) {

@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import net.cubiness.colachampionship.commands.TabCompleteManager;
 import net.cubiness.colachampionship.minigame.MinigameAPI;
 import net.cubiness.colachampionship.minigame.MinigameManager;
+import net.cubiness.colachampionship.scoreboard.ScoreManager;
+import net.cubiness.colachampionship.scoreboard.ScoreboardDisplay;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -129,7 +131,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
             return true;
           }
           int score = Integer.parseInt(args[2]);
-          scoreManager.addTotalScore(p.getName(), score);
+          scoreManager.addTotalScore(p, score);
         } else if (args[0].equals("remove") && args.length == 3) {
           Player p = Bukkit.getPlayer(args[1]);
           if (p == null) {
@@ -141,7 +143,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
             return true;
           }
           int score = Integer.parseInt(args[2]);
-          scoreManager.addTotalScore(p.getName(), -score);
+          scoreManager.addTotalScore(p, -score);
         } else if (args[0].equals("set") && args.length == 3) {
           Player p = Bukkit.getPlayer(args[1]);
           if (p == null) {
@@ -153,7 +155,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
             return true;
           }
           int score = Integer.parseInt(args[2]);
-          scoreManager.setTotalScore(p.getName(), score);
+          scoreManager.setTotalScore(p, score);
         } else {
           return false;
         }
