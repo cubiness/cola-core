@@ -1,7 +1,9 @@
 package net.cubiness.colachampionship.scoreboard;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
@@ -40,7 +42,8 @@ public class ScoreManager {
     if (!plugin.getDataFolder().exists()) {
       plugin.getDataFolder().mkdir();
     }
-    plugin.getLogger().info("Path: " + totalPointsPath);
+    plugin.getLogger().info("Total Points path: " + totalPointsPath);
+    readTotals();
     showTotalScores();
   }
 
@@ -59,6 +62,28 @@ public class ScoreManager {
       saveTotals();
     }
     display.update();
+  }
+
+  private void readTotals() {
+    BufferedReader w;
+    try {
+      w = new BufferedReader(new FileReader(totalPointsPath));
+    } catch (IOException e) {
+      e.printStackTrace();
+      return;
+    }
+    totalPoints.clear();
+    try {
+      String line;
+      while ((line = w.readLine()) != null) {
+        UUID id = UUID.fromString(line.split(":")[0]);
+        int score = Integer.parseInt(line.split(":")[1]);
+        totalPoints.setPoints(id, score);
+      }
+      w.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   private void saveTotals() {

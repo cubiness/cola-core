@@ -29,7 +29,7 @@ public class PointsSection extends ScoreboardSection {
         .collect(Collectors.toList());
     int i = 0;
     for (UUID id : ids) {
-      setRow(i, Bukkit.getPlayer(id).getName() + ": " + points.get(id));
+      setRow(i, Bukkit.getOfflinePlayer(id).getName() + ": " + points.get(id));
       i++;
     }
   }
@@ -57,5 +57,10 @@ public class PointsSection extends ScoreboardSection {
 
   public int getPoints(UUID player) {
     return points.get(player);
+  }
+
+  public void clear() {
+    clearRows();
+    points.clear();
   }
 }
