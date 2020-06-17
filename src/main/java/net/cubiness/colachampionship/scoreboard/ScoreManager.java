@@ -1,6 +1,11 @@
 package net.cubiness.colachampionship.scoreboard;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 import net.cubiness.colachampionship.scoreboard.section.LineSection;
@@ -17,6 +22,7 @@ public class ScoreManager {
   private final Set<ScoreboardSection> minigameSections = new HashSet<>();
   private final PointsSection totalPoints;
   private final ScoreboardDisplay display;
+  private final File totalPointsPath;
   private boolean showingTotal = true;
   private String minigameName = "";
   private String title = "Cola2 Championship   ";
@@ -30,6 +36,11 @@ public class ScoreManager {
     totalSections.add(totalPoints);
     totalSections.add(new LineSection(ChatColor.YELLOW + "www.cola2.net", 1));
     minigameSections.add(new LineSection(ChatColor.YELLOW + "www.cola2.net", 1));
+    totalPointsPath = new File(plugin.getDataFolder().getAbsolutePath() + "/total-points.csv");
+    if (!plugin.getDataFolder().exists()) {
+      plugin.getDataFolder().mkdir();
+    }
+    plugin.getLogger().info("Path: " + totalPointsPath);
     showTotalScores();
   }
 
@@ -51,6 +62,23 @@ public class ScoreManager {
   }
 
   private void saveTotals() {
+    BufferedWriter w;
+    try {
+      w = new BufferedWriter(new FileWriter(totalPointsPath));
+    } catch (IOException e) {
+      e.printStackTrace();
+      return;
+    }
+    try {
+      for (Iterator<UUID> it = totalPoints.getPlayers(); it.hasNext(); ) {
+        UUID p = it.next();
+        w.write(p + ":" + totalPoints.getPoints(p) + "\n");
+      }
+      w.flush();
+      w.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   private void updateTitle() {

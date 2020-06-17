@@ -1,7 +1,7 @@
 package net.cubiness.colachampionship.scoreboard.section;
 
-import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -49,5 +49,13 @@ public class PointsSection extends ScoreboardSection {
 
   public void addPoints(Player p, int score) {
     addPoints(p.getUniqueId(), score);
+  }
+
+  public Iterator<UUID> getPlayers() {
+    return points.keySet().iterator();
+  }
+
+  public int getPoints(UUID player) {
+    return points.get(player);
   }
 }

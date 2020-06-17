@@ -37,12 +37,12 @@ public abstract class ScoreboardSection {
     this.title = title;
   }
 
-  public void setPosition(int row) {
-    this.row = row;
-  }
-
   public int getPosition() {
     return row;
+  }
+
+  public void setPosition(int row) {
+    this.row = row;
   }
 
   public List<String> getContents() {
