@@ -60,6 +60,7 @@ public class ScoreboardDisplay {
 
   public void update() {
     for (ScoreboardSection s : sections) {
+      s.update();
       List<String> contents = s.getContents();
       int index = 0;
       for (int i = s.getPosition(); i > s.getPosition() - s.getHeight(); i--) {

@@ -22,7 +22,8 @@ public class PointsSection extends ScoreboardSection {
     updateRows();
   }
 
-  private void updateRows() {
+  @Override
+  protected void updateRows() {
     clearRows();
     List<UUID> ids = points.keySet().stream()
         .sorted((a, b) -> points.get(b).compareTo(points.get(a)))
@@ -32,6 +33,11 @@ public class PointsSection extends ScoreboardSection {
       setRow(i, Bukkit.getOfflinePlayer(id).getName() + ": " + points.get(id));
       i++;
     }
+  }
+
+  @Override
+  protected boolean needsUpdate() {
+    return false;
   }
 
   public void setPoints(Player p, int score) {

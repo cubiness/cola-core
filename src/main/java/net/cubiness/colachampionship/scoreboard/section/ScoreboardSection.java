@@ -19,7 +19,7 @@ public abstract class ScoreboardSection {
     }
   }
 
-  protected void setRow(int row, String content) {
+  protected final void setRow(int row, String content) {
     if (row < rows.size()) {
       rows.set(row, content);
     } else {
@@ -27,32 +27,42 @@ public abstract class ScoreboardSection {
     }
   }
 
-  protected void clearRows() {
+  protected final void clearRows() {
     for (int i = 0; i < height - 1; i++) {
       rows.set(i, "");
     }
   }
 
-  public void setTitle(String title) {
+  public final void setTitle(String title) {
     this.title = title;
   }
 
-  public int getPosition() {
+  public final int getPosition() {
     return row;
   }
 
-  public void setPosition(int row) {
+  public final void setPosition(int row) {
     this.row = row;
   }
 
-  public List<String> getContents() {
+  public final List<String> getContents() {
     List<String> contents = new ArrayList<>();
     contents.add(title);
     rows.forEach(row -> contents.add("  " + row));
     return contents;
   }
 
-  public int getHeight() {
+  public final int getHeight() {
     return height;
   }
+
+  public void update() {
+    if (needsUpdate()) {
+      updateRows();
+    }
+  }
+
+  protected abstract void updateRows();
+
+  protected abstract boolean needsUpdate();
 }
