@@ -57,6 +57,10 @@ public abstract class Minigame {
     return players.iterator();
   }
 
+  protected final int getNumPlayers() {
+    return players.size();
+  }
+
   public final String checkStart() {
     if (players.size() < getMinimumPlayers()) {
       return getName() + " needs at least " + getMinimumPlayers() + " players to start!";
