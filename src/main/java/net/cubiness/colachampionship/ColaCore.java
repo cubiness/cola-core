@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
@@ -40,6 +41,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("score").setTabCompleter(tabComplete);
     getCommand("showscore").setTabCompleter(tabComplete);
     getCommand("join").setTabCompleter(tabComplete);
+    getCommand("joinall").setTabCompleter(tabComplete);
     getCommand("leave").setTabCompleter(tabComplete);
     getCommand("updatescoreboard").setTabCompleter(tabComplete);
     tabComplete.addCompletion("minigame",
@@ -72,15 +74,18 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     if (newPlayers) {
       tabComplete.addCompletion("score",
           Arrays.asList("set"),
-          Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
+          Bukkit.getOnlinePlayers().stream()
+              .map(HumanEntity::getName)
               .collect(Collectors.toList()));
       tabComplete.addCompletion("score",
           Arrays.asList("add"),
-          Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
+          Bukkit.getOnlinePlayers().stream()
+              .map(HumanEntity::getName)
               .collect(Collectors.toList()));
       tabComplete.addCompletion("score",
           Arrays.asList("remove"),
-          Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
+          Bukkit.getOnlinePlayers().stream()
+              .map(HumanEntity::getName)
               .collect(Collectors.toList()));
     }
   }
@@ -259,5 +264,13 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent e) {
     display.showScoreboard(e.getPlayer());
+    updateTabComplete(false, true);
+  }
+
+  @EventHandler
+  public void onPlayerLeave(PlayerQuitEvent e) {
+    Bukkit.getScheduler().runTaskLater(this, () -> {
+      updateTabComplete(false, true);
+    }, 1);
   }
 }
