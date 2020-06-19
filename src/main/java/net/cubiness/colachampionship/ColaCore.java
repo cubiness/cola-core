@@ -94,6 +94,10 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     return minigames.getAPI();
   }
 
+  public TabCompleteManager getTabComplete() {
+    return tabComplete;
+  }
+
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if (label.equals("minigame")) {

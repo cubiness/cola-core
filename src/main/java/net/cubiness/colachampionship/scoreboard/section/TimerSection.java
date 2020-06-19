@@ -11,12 +11,14 @@ public class TimerSection extends ScoreboardSection {
   private final Plugin plugin;
   private final MinigameAPI api;
   public int secondsLeft;
+  private int startTime;
   private BukkitTask timerCountID;
 
   public TimerSection(Plugin plugin, String title, int row, int startSeconds) {
     super(2, title, row);
     this.plugin = plugin;
     secondsLeft = startSeconds;
+    startTime = startSeconds;
     api = ((ColaCore) Bukkit.getPluginManager().getPlugin("ColaCore")).getAPI();
   }
 
@@ -41,9 +43,13 @@ public class TimerSection extends ScoreboardSection {
     secondsLeft = seconds;
   }
 
+  public void reset() {
+    secondsLeft = startTime;
+  }
+
   @Override
   protected void updateRows() {
-    setRow(0, (secondsLeft / 60) + ":" + (secondsLeft % 60));
+    setRow(0, String.format("%02d:%02d", (secondsLeft / 60), (secondsLeft % 60)));
   }
 
   @Override
