@@ -2,6 +2,7 @@ name: ColaCore
 main: net.cubiness.colachampionship.ColaCore
 version: 1.0
 api-version: 1.15
+depend: [ProtocolLib]
 commands:
   minigame:
     description: Set cola championship minigame
@@ -15,18 +16,10 @@ commands:
     description: Shows the minigame or total score for all players
     permission: cc.score
     usage: /showscore <total | minigame>
-  join:
-    description: Puts player into the lobby of a minigame
-    permission: cc.join
-    usage: /join <minigame>
   joinall:
     description: Puts all players into a minigame
     permission: cc.joinall
     usage: /joinall <minigame>
-  leave:
-    description: Removes the player from whatever minigame they were in, if any
-    permission: cc.leave
-    usage: /leave
   updatescoreboard:
     description: Fixes scoreboard
     permission: cc.updatescoreboard
@@ -38,15 +31,9 @@ permissions:
   cc.score:
     description: Permission to alter players' score
     default: op
-  cc.join:
-    description: Permission to join minigame
-    default: true
   cc.joinall:
     description: Permission to send all players minigame
     default: op
-  cc.leave:
-    description: Permission to leave minigame
-    default: true
   cc.updatescorebord:
     description: Permission to fix scoreboard
     default: true

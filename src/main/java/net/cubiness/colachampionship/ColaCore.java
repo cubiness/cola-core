@@ -206,15 +206,13 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
           if (minigames.running()) {
             sender.sendMessage(ChatColor.RED + "There is already a minigame in progress!");
           } else if (minigames.hasMinigame(args[0])) {
-            Bukkit.getOnlinePlayers().forEach(p -> {
-              minigames.addPlayer(p, args[0]);
-            });
+            minigames.addAll(args[0]);
           } else {
             sender
                 .sendMessage(ChatColor.RED + "Minigame " + args[0] + " has not been registered!");
           }
         } else {
-          sender.sendMessage(ChatColor.RED + "You must be a player to run this command!");
+          return false;
         }
       }
     } else {

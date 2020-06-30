@@ -13,6 +13,7 @@ public class TimerSection extends ScoreboardSection {
   public int secondsLeft;
   private int startTime;
   private BukkitTask timerCountID;
+  private Runnable onFinishTask;
 
   public TimerSection(Plugin plugin, String title, int row, int startSeconds) {
     super(2, title, row);
@@ -20,6 +21,10 @@ public class TimerSection extends ScoreboardSection {
     secondsLeft = startSeconds;
     startTime = startSeconds;
     api = ((ColaCore) Bukkit.getPluginManager().getPlugin("ColaCore")).getAPI();
+  }
+
+  public void onFinish(Runnable task) {
+    onFinishTask = task;
   }
 
   public void start() {
@@ -33,6 +38,10 @@ public class TimerSection extends ScoreboardSection {
   private void decreaseTime() {
     secondsLeft -= 1;
     api.updateScoreboard();
+    if (secondsLeft <= 0) {
+      stop();
+      onFinishTask.run();
+    }
   }
 
   public int getTimeLeft() {

@@ -17,15 +17,10 @@ public class MinigamePlayer {
   }
 
   public void setCurrentMinigame(Minigame minigame) {
-    if (currentMinigame == null) {
-      currentMinigame = minigame;
-      player.sendMessage(ChatColor.GREEN + "Joining " + currentMinigame.getName());
-      minigame.addPlayer(player);
-    } else {
-      throw new RuntimeException(
-          "Player is already in " + currentMinigame.getName() + ", cannnot join " + minigame
-              .getName());
-    }
+    assert currentMinigame == null;
+    currentMinigame = minigame;
+    player.sendMessage(ChatColor.GREEN + "Joining " + currentMinigame.getName());
+    minigame.addPlayer(player);
   }
 
   /***
@@ -36,7 +31,6 @@ public class MinigamePlayer {
     if (currentMinigame == null) {
       return false;
     } else {
-      player.sendMessage(ChatColor.GREEN + "Leaving " + currentMinigame.getName());
       currentMinigame.removePlayer(player);
       currentMinigame = null;
       return true;
