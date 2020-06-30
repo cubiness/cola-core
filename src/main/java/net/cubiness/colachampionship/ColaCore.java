@@ -1,5 +1,7 @@
 package net.cubiness.colachampionship;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -8,6 +10,7 @@ import net.cubiness.colachampionship.minigame.MinigameAPI;
 import net.cubiness.colachampionship.minigame.MinigameManager;
 import net.cubiness.colachampionship.scoreboard.ScoreManager;
 import net.cubiness.colachampionship.scoreboard.ScoreboardDisplay;
+import net.cubiness.colachampionship.utils.PacketUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -28,7 +31,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
   private ScoreManager scoreManager;
   private MinigameManager minigames;
   private TabCompleteManager tabComplete;
-
+  private PacketUtils packetUtils;
 
   @Override
   public void onEnable() {
@@ -40,9 +43,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("minigame").setTabCompleter(tabComplete);
     getCommand("score").setTabCompleter(tabComplete);
     getCommand("showscore").setTabCompleter(tabComplete);
-    getCommand("join").setTabCompleter(tabComplete);
     getCommand("joinall").setTabCompleter(tabComplete);
-    getCommand("leave").setTabCompleter(tabComplete);
     getCommand("updatescoreboard").setTabCompleter(tabComplete);
     tabComplete.addCompletion("minigame",
         Collections.emptyList(),
@@ -54,18 +55,13 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
         Collections.emptyList(),
         Arrays.asList("total", "minigame"));
     updateTabComplete(false, true);
+    packetUtils = new PacketUtils(ProtocolLibrary.getProtocolManager());
   }
 
   public void updateTabComplete(boolean newMinigames, boolean newPlayers) {
     if (newMinigames) {
       tabComplete.addCompletion("minigame",
           Arrays.asList("start"),
-          minigames.getMinigameList());
-      tabComplete.addCompletion("join",
-          Collections.emptyList(),
-          minigames.getMinigameList());
-      tabComplete.addCompletion("join",
-          Collections.emptyList(),
           minigames.getMinigameList());
       tabComplete.addCompletion("joinall",
           Collections.emptyList(),
@@ -96,6 +92,10 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
 
   public TabCompleteManager getTabComplete() {
     return tabComplete;
+  }
+
+  public PacketUtils getPacketUtils() {
+    return packetUtils;
   }
 
   @Override
@@ -194,43 +194,6 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
       } else {
         if (args.length == 0) {
           display.showScoreboard((Player) sender);
-        } else {
-          return false;
-        }
-      }
-    } else if (label.equals("join")) {
-      if (!sender.hasPermission("cc.join")) {
-        sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
-      } else {
-        if (args.length == 1) {
-          if (sender instanceof Player) {
-            if (minigames.running()) {
-              sender.sendMessage(ChatColor.RED + "There is already a minigame in progress!");
-            } else if (minigames.hasMinigame(args[0])) {
-              minigames.addPlayer((Player) sender, args[0]);
-            } else {
-              sender
-                  .sendMessage(ChatColor.RED + "Minigame " + args[0] + " has not been registered!");
-            }
-          } else {
-            sender.sendMessage(ChatColor.RED + "You must be a player to run this command!");
-          }
-        } else {
-          return false;
-        }
-      }
-    } else if (label.equals("leave")) {
-      if (!sender.hasPermission("cc.leave")) {
-        sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
-      } else {
-        if (args.length == 0) {
-          if (sender instanceof Player) {
-            if (!minigames.onPlayerLeaveMinigame((Player) sender)) {
-              sender.sendMessage(ChatColor.RED + "You are not in a minigame!");
-            }
-          } else {
-            sender.sendMessage(ChatColor.RED + "You must be a player to run this command!");
-          }
         } else {
           return false;
         }
