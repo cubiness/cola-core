@@ -36,4 +36,4 @@ permissions:
     default: op
   cc.updatescorebord:
     description: Permission to fix scoreboard
-    default: true
+    default: op

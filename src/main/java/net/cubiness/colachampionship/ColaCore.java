@@ -193,7 +193,9 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
         sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
       } else {
         if (args.length == 0) {
-          display.showScoreboard((Player) sender);
+          Bukkit.getOnlinePlayers().forEach(p -> {
+            display.showScoreboard(p);
+          });
         } else {
           return false;
         }
