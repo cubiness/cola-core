@@ -1,16 +1,9 @@
 package net.cubiness.colachampionship;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
-import net.cubiness.colachampionship.commands.TabCompleteManager;
-import net.cubiness.colachampionship.minigame.MinigameAPI;
-import net.cubiness.colachampionship.minigame.MinigameManager;
-import net.cubiness.colachampionship.scoreboard.ScoreManager;
-import net.cubiness.colachampionship.scoreboard.ScoreboardDisplay;
-import net.cubiness.colachampionship.utils.PacketUtils;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,6 +17,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.comphenix.protocol.ProtocolLibrary;
+
+import net.cubiness.colachampionship.commands.TabCompleteManager;
+import net.cubiness.colachampionship.minigame.MinigameAPI;
+import net.cubiness.colachampionship.minigame.MinigameManager;
+import net.cubiness.colachampionship.scoreboard.ScoreManager;
+import net.cubiness.colachampionship.scoreboard.ScoreboardDisplay;
+import net.cubiness.colachampionship.utils.PacketUtils;
 
 public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
 
