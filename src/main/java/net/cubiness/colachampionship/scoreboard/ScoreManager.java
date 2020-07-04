@@ -127,8 +127,9 @@ public class ScoreManager {
     minigameName = name;
   }
 
-  public void addMinigameSection(ScoreboardSection section) {
-    minigameSections.add(section);
+  public void setMinigameSections(Set<ScoreboardSection> sections) {
+    minigameSections.clear();
+    minigameSections.addAll(sections);
     update();
   }
 

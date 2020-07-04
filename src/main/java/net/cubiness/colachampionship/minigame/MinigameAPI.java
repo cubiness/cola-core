@@ -15,8 +15,8 @@ public class MinigameAPI {
     manager.registerMinigame(minigame);
   }
 
-  public void addSection(ScoreboardSection section) {
-    manager.getScoreboard().addMinigameSection(section);
+  public void addSection(Minigame game, ScoreboardSection section) {
+    manager.addMinigameSection(game, section);
   }
 
   public void updateScoreboard() {

@@ -2,18 +2,24 @@ package net.cubiness.colachampionship.minigame;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import net.cubiness.colachampionship.ColaCore;
-import net.cubiness.colachampionship.scoreboard.ScoreManager;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import net.cubiness.colachampionship.ColaCore;
+import net.cubiness.colachampionship.scoreboard.ScoreManager;
+import net.cubiness.colachampionship.scoreboard.section.ScoreboardSection;
+
 public class MinigameManager {
 
   private final Map<String, Minigame> minigames = new HashMap<>();
+  private final Map<Minigame, Set<ScoreboardSection>> minigameSections = new HashMap<>();
   private final ScoreManager scoreManager;
   private final MinigameAPI api = new MinigameAPI(this);
   private final Map<Player, MinigamePlayer> players = new HashMap<>();
@@ -48,6 +54,9 @@ public class MinigameManager {
     if (!minigames.containsKey(minigameName)) {
       throw new RuntimeException("Minigame " + minigameName + " has not been registered!");
     }
+    Minigame game = minigames.get(minigameName);
+    scoreManager.setMinigameSections(minigameSections.get(game));
+    scoreManager.update();
     Bukkit.getOnlinePlayers().forEach(p -> {
       MinigamePlayer player = players.get(p);
       if (player == null) {
@@ -57,7 +66,6 @@ public class MinigameManager {
       if (player.getCurrentMinigame() != null) {
         player.leaveCurrentMinigame();
       }
-      Minigame game = minigames.get(minigameName);
       player.setCurrentMinigame(game);
       minigames.get(minigameName).addPlayer(p);
     });
@@ -132,6 +140,7 @@ public class MinigameManager {
           "Minigame " + minigame.getName() + " has already been registered!");
     }
     minigames.put(minigame.getName(), minigame);
+    minigameSections.put(minigame, new HashSet<>());
     cola.updateTabComplete(true, false);
   }
 
@@ -193,5 +202,10 @@ public class MinigameManager {
    */
   public ScoreManager getScoreboard() {
     return scoreManager;
+  }
+
+  public void addMinigameSection(Minigame game, ScoreboardSection section) {
+    minigameSections.get(game).add(section);
+    scoreManager.update();
   }
 }
