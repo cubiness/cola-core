@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -13,8 +14,8 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.plugin.Plugin;
 
+import net.cubiness.colachampionship.ColaCore;
 import net.cubiness.colachampionship.minigame.MinigamePlayer;
 import net.cubiness.colachampionship.scoreboard.section.LineSection;
 import net.cubiness.colachampionship.scoreboard.section.PointsSection;
@@ -27,18 +28,17 @@ public class ScoreManager {
   private final File totalPointsPath;
   private String title = "Cola2 Championship   ";
 
-  public ScoreManager(Plugin plugin) {
-    Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this::updateTitle, 5, 5);
+  public ScoreManager(ColaCore core) {
     totalPoints = new PointsSection(13,
         "" + ChatColor.GREEN + ChatColor.BOLD + "Total Points",
         14);
     totalSections.add(totalPoints);
     totalSections.add(new LineSection(ChatColor.YELLOW + "www.cola2.net", 1));
-    totalPointsPath = new File(plugin.getDataFolder().getAbsolutePath() + "/total-points.csv");
-    if (!plugin.getDataFolder().exists()) {
-      plugin.getDataFolder().mkdir();
+    totalPointsPath = new File(core.getDataFolder().getAbsolutePath() + "/total-points.csv");
+    if (!core.getDataFolder().exists()) {
+      core.getDataFolder().mkdir();
     }
-    plugin.getLogger().info("Total Points path: " + totalPointsPath);
+    core.getLogger().info("Total Points path: " + totalPointsPath);
     readTotals();
   }
 
@@ -94,8 +94,9 @@ public class ScoreManager {
     }
   }
 
-  private void updateTitle() {
+  public void updateTitle(Collection<MinigamePlayer> players) {
     title = title.charAt(title.length() - 1) + title.substring(0, title.length() - 1);
+    players.forEach(p -> p.setScoreboardTitle(title));
   }
 
   public String getTitle() {

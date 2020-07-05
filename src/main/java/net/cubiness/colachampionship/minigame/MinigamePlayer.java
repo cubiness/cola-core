@@ -55,7 +55,11 @@ public class MinigamePlayer {
     display.setSections(sections);
   }
 
-  public void showTotalScore() {
+  public void setScoreboardTitle(String title) {
+    display.setTitle(title);
+  }
+
+  public void showTotalScores() {
     assert currentMinigame == null;
     display.setSections(manager.getScoreboard().getTotalScoreboard());
   }

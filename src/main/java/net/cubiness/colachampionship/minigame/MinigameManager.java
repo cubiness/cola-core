@@ -26,6 +26,7 @@ public class MinigameManager {
   public MinigameManager(ColaCore cola, ScoreManager scoreManager) {
     this.cola = cola;
     this.scoreManager = scoreManager;
+    Bukkit.getScheduler().scheduleSyncRepeatingTask(cola, () -> scoreManager.updateTitle(getPlayers()), 5, 5);
   }
 
   /**
@@ -170,6 +171,11 @@ public class MinigameManager {
    */
   public boolean hasMinigame(String name) {
     return minigames.containsKey(name);
+  }
+
+  public Minigame getMinigame(String name) {
+    assert minigames.containsKey(name);
+    return minigames.get(name);
   }
 
   /**

@@ -14,8 +14,8 @@ commands:
     usage: /score <add | remove | set> <username> <value>
   showscore:
     description: Shows the minigame or total score for all players
-    permission: cc.score
-    usage: /showscore <total | minigame>
+    permission: cc.showscore
+    usage: /showscore (total | minigame <minigame>)
   joinall:
     description: Puts all players into a minigame
     permission: cc.joinall
@@ -31,6 +31,9 @@ permissions:
   cc.score:
     description: Permission to alter players' score
     default: op
+  cc.showscore:
+    description: Permission to show different scoreboard
+    default: true
   cc.joinall:
     description: Permission to send all players minigame
     default: op

@@ -23,6 +23,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import net.cubiness.colachampionship.commands.TabCompleteManager;
 import net.cubiness.colachampionship.minigame.MinigameAPI;
 import net.cubiness.colachampionship.minigame.MinigameManager;
+import net.cubiness.colachampionship.minigame.MinigamePlayer;
 import net.cubiness.colachampionship.scoreboard.ScoreManager;
 import net.cubiness.colachampionship.utils.PacketUtils;
 
@@ -64,6 +65,9 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
           minigames.getMinigameList());
       tabComplete.addCompletion("joinall",
           Collections.emptyList(),
+          minigames.getMinigameList());
+      tabComplete.addCompletion("showscore",
+          Arrays.asList("minigame"),
           minigames.getMinigameList());
     }
     if (newPlayers) {
@@ -171,26 +175,35 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
           return false;
         }
       }
-    // } else if (label.equals("showscore")) {
-    //   if (!sender.hasPermission("cc.score")) {
-    //     sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
-    //   } else {
-    //     if (!(sender instanceof Player)) {
-    //       sender.sendMessage(ChatColor.RED + "Only players can run this command!");
-    //     }
-    //     if (args.length == 1) {
-    //       Player p = (Player) sender;
-    //       if (args[0].equals("total")) {
-    //         minigames.get(p).showTotalScores();
-    //       } else if (args[0].equals("minigame")) {
-    //         minigames.get(p).showMinigameScores();
-    //       } else {
-    //         return false;
-    //       }
-    //     } else {
-    //       return false;
-    //     }
-    //   }
+     } else if (label.equals("showscore")) {
+       if (!sender.hasPermission("cc.score")) {
+         sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
+       } else {
+         if (!(sender instanceof Player)) {
+           sender.sendMessage(ChatColor.RED + "Only players can run this command!");
+         }
+         if (args.length >= 1) {
+           Player player = (Player) sender;
+           MinigamePlayer p = minigames.getPlayer(player);
+           if (minigames.running()) {
+             sender.sendMessage(ChatColor.RED + "You cannot show a different scoreboard while a minigame is running!");
+           } else {
+             if (args[0].equals("total") && args.length == 1) {
+               p.showTotalScores();
+             } else if (args[0].equals("minigame") && args.length == 2) {
+               if (minigames.hasMinigame(args[1])) {
+                 p.showMinigameScore(minigames.getMinigame(args[1]));
+               } else {
+                 sender.sendMessage(ChatColor.RED + "Minigame " + args[1] + " has not been registered!");
+               }
+             } else {
+               return false;
+             }
+           }
+         } else {
+           return false;
+         }
+       }
     } else if (label.equals("updatescoreboard")) {
       if (!sender.hasPermission("cc.updatescorebord")) {
         sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
