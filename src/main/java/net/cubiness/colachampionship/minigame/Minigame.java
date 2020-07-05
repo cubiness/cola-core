@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.bukkit.Location;
 
+import net.cubiness.colachampionship.minigame.config.Config;
+import net.cubiness.colachampionship.minigame.config.ConfigUtils;
 import net.cubiness.colachampionship.scoreboard.section.ScoreboardSection;
 
 public abstract class Minigame {
@@ -16,10 +18,15 @@ public abstract class Minigame {
   protected Collection<ScoreboardSection> scoreboard = new HashSet<>();
   private final List<MinigamePlayer> players = new ArrayList<>();
   private boolean running = false;
+  private final Config config;
 
   public Minigame(MinigameAPI api) {
     this.api = api;
     api.registerMinigame(this);
+    config = api.getConfig(this);
+    if (config == null) {
+      throw new RuntimeException("Cannot load config for minigame " + getName());
+    }
   }
 
   /**
@@ -119,6 +126,19 @@ public abstract class Minigame {
   }
 
   /**
+   * Called from the minigame when a player joins, and needs to be teleported to the lobby
+   *
+   * @return The location of the lobby
+   */
+  public final Location getLobby() {
+    String str = config.get("lobby");
+    if (str == null) {
+      throw new RuntimeException("Please set a value for 'lobby' in the config " + getName() + ".conf");
+    }
+    return ConfigUtils.locationFromString(str);
+  }
+
+  /**
    * Called from the minigame when this game is about to be destroyed
    */
   protected abstract void onReset();
@@ -146,13 +166,6 @@ public abstract class Minigame {
    * Called from the minigame when the minigame is getting force stopped
    */
   protected abstract void onForceStop();
-
-  /**
-   * Called from the minigame when a player joins, and needs to be teleported to the lobby
-   *
-   * @return The location of the lobby
-   */
-  public abstract Location getLobby();
 
   /**
    * Called from ColaCore when registering the minigame

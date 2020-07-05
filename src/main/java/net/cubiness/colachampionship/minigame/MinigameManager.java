@@ -34,6 +34,10 @@ public class MinigameManager {
     Bukkit.getScheduler().scheduleSyncRepeatingTask(cola, () -> scoreManager.updateTitle(getPlayers()), 5, 5);
   }
 
+  public ConfigManager getConfigs() {
+    return config;
+  }
+
   /**
    * Called when the entire ColaCore is being reset. All minigames should be killed if this happens
    */

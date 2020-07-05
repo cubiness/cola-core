@@ -2,6 +2,8 @@ package net.cubiness.colachampionship.minigame;
 
 import org.bukkit.Location;
 
+import net.cubiness.colachampionship.minigame.config.Config;
+
 public class MinigameAPI {
 
   private final MinigameManager manager;
@@ -17,6 +19,15 @@ public class MinigameAPI {
    */
   public void registerMinigame(Minigame minigame) {
     manager.registerMinigame(minigame);
+  }
+
+  /**
+   * Gets the config object for a minigame
+   *
+   * @param minigame The minigame
+   */
+  public Config getConfig(Minigame minigame) {
+    return manager.getConfigs().get(minigame.getName());
   }
 
   /**
