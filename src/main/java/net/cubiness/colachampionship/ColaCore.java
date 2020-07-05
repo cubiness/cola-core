@@ -24,12 +24,10 @@ import net.cubiness.colachampionship.commands.TabCompleteManager;
 import net.cubiness.colachampionship.minigame.MinigameAPI;
 import net.cubiness.colachampionship.minigame.MinigameManager;
 import net.cubiness.colachampionship.scoreboard.ScoreManager;
-import net.cubiness.colachampionship.scoreboard.ScoreboardDisplay;
 import net.cubiness.colachampionship.utils.PacketUtils;
 
 public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
 
-  private ScoreboardDisplay display;
   private ScoreManager scoreManager;
   private MinigameManager minigames;
   private TabCompleteManager tabComplete;
@@ -38,8 +36,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
   @Override
   public void onEnable() {
     getServer().getPluginManager().registerEvents(this, this);
-    display = new ScoreboardDisplay();
-    scoreManager = new ScoreManager(this, display);
+    scoreManager = new ScoreManager(this);
     minigames = new MinigameManager(this, scoreManager);
     tabComplete = new TabCompleteManager();
     getCommand("minigame").setTabCompleter(tabComplete);
@@ -145,7 +142,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
             return true;
           }
           int score = Integer.parseInt(args[2]);
-          scoreManager.addTotalScore(p, score);
+          scoreManager.addTotalScore(minigames.getPlayer(p), score);
         } else if (args[0].equals("remove") && args.length == 3) {
           Player p = Bukkit.getPlayer(args[1]);
           if (p == null) {
@@ -157,7 +154,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
             return true;
           }
           int score = Integer.parseInt(args[2]);
-          scoreManager.addTotalScore(p, -score);
+          scoreManager.addTotalScore(minigames.getPlayer(p), -score);
         } else if (args[0].equals("set") && args.length == 3) {
           Player p = Bukkit.getPlayer(args[1]);
           if (p == null) {
@@ -169,34 +166,38 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
             return true;
           }
           int score = Integer.parseInt(args[2]);
-          scoreManager.setTotalScore(p, score);
+          scoreManager.setTotalScore(minigames.getPlayer(p), score);
         } else {
           return false;
         }
       }
-    } else if (label.equals("showscore")) {
-      if (!sender.hasPermission("cc.score")) {
-        sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
-      } else {
-        if (args.length == 1) {
-          if (args[0].equals("total")) {
-            scoreManager.showTotalScores();
-          } else if (args[0].equals("minigame")) {
-            scoreManager.showMinigameScores();
-          } else {
-            return false;
-          }
-        } else {
-          return false;
-        }
-      }
+    // } else if (label.equals("showscore")) {
+    //   if (!sender.hasPermission("cc.score")) {
+    //     sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
+    //   } else {
+    //     if (!(sender instanceof Player)) {
+    //       sender.sendMessage(ChatColor.RED + "Only players can run this command!");
+    //     }
+    //     if (args.length == 1) {
+    //       Player p = (Player) sender;
+    //       if (args[0].equals("total")) {
+    //         minigames.get(p).showTotalScores();
+    //       } else if (args[0].equals("minigame")) {
+    //         minigames.get(p).showMinigameScores();
+    //       } else {
+    //         return false;
+    //       }
+    //     } else {
+    //       return false;
+    //     }
+    //   }
     } else if (label.equals("updatescoreboard")) {
       if (!sender.hasPermission("cc.updatescorebord")) {
         sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
       } else {
         if (args.length == 0) {
           Bukkit.getOnlinePlayers().forEach(p -> {
-            display.showScoreboard(p);
+            //display.showScoreboard(p);
           });
         } else {
           return false;
@@ -232,7 +233,6 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
 
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent e) {
-    display.showScoreboard(e.getPlayer());
     updateTabComplete(false, true);
   }
 

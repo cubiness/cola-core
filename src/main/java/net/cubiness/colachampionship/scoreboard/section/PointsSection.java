@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+
+import net.cubiness.colachampionship.minigame.MinigamePlayer;
 
 public class PointsSection extends ScoreboardSection {
 
@@ -40,8 +42,8 @@ public class PointsSection extends ScoreboardSection {
     return false;
   }
 
-  public void setPoints(Player p, int score) {
-    setPoints(p.getUniqueId(), score);
+  public void setPoints(MinigamePlayer p, int score) {
+    setPoints(p.getPlayer().getUniqueId(), score);
   }
 
   public void addPoints(UUID id, int score) {
@@ -53,8 +55,8 @@ public class PointsSection extends ScoreboardSection {
     updateRows();
   }
 
-  public void addPoints(Player p, int score) {
-    addPoints(p.getUniqueId(), score);
+  public void addPoints(MinigamePlayer p, int score) {
+    addPoints(p.getPlayer().getUniqueId(), score);
   }
 
   public Iterator<UUID> getPlayers() {

@@ -3,6 +3,8 @@ package net.cubiness.colachampionship.scoreboard.section;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.cubiness.colachampionship.minigame.MinigamePlayer;
+
 public abstract class ScoreboardSection {
 
   private final List<String> rows = new ArrayList<>();
@@ -45,7 +47,7 @@ public abstract class ScoreboardSection {
     this.row = row;
   }
 
-  public final List<String> getContents() {
+  public List<String> getContents(MinigamePlayer p) {
     List<String> contents = new ArrayList<>();
     contents.add(title);
     rows.forEach(row -> contents.add("  " + row));

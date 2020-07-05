@@ -1,11 +1,10 @@
 package net.cubiness.colachampionship.minigame;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,15 +13,13 @@ import org.bukkit.entity.Player;
 
 import net.cubiness.colachampionship.ColaCore;
 import net.cubiness.colachampionship.scoreboard.ScoreManager;
-import net.cubiness.colachampionship.scoreboard.section.ScoreboardSection;
 
 public class MinigameManager {
 
   private final Map<String, Minigame> minigames = new HashMap<>();
-  private final Map<Minigame, Set<ScoreboardSection>> minigameSections = new HashMap<>();
+  private final Map<Player, MinigamePlayer> players = new HashMap<>();
   private final ScoreManager scoreManager;
   private final MinigameAPI api = new MinigameAPI(this);
-  private final Map<Player, MinigamePlayer> players = new HashMap<>();
   private final ColaCore cola;
   private Minigame runningGame;
 
@@ -31,7 +28,7 @@ public class MinigameManager {
     this.scoreManager = scoreManager;
   }
 
-  /***
+  /**
    * Called when the entire ColaCore is being reset. All minigames should be killed if this happens
    */
   public void reset() {
@@ -55,19 +52,17 @@ public class MinigameManager {
       throw new RuntimeException("Minigame " + minigameName + " has not been registered!");
     }
     Minigame game = minigames.get(minigameName);
-    scoreManager.setMinigameSections(minigameSections.get(game));
-    scoreManager.update();
     Bukkit.getOnlinePlayers().forEach(p -> {
       MinigamePlayer player = players.get(p);
       if (player == null) {
-        player = new MinigamePlayer(p);
+        player = new MinigamePlayer(p, this);
         players.put(p, player);
       }
       if (player.getCurrentMinigame() != null) {
         player.leaveCurrentMinigame();
       }
       player.setCurrentMinigame(game);
-      minigames.get(minigameName).addPlayer(p);
+      minigames.get(minigameName).addPlayer(player);
     });
   }
 
@@ -78,7 +73,7 @@ public class MinigameManager {
    */
   public boolean onPlayerLeaveMinigame(Player p) {
     if (players.get(p) == null) {
-      players.put(p, new MinigamePlayer(p));
+      players.put(p, new MinigamePlayer(p, this));
     }
     return players.get(p).leaveCurrentMinigame();
   }
@@ -107,8 +102,6 @@ public class MinigameManager {
     }
     Bukkit.broadcastMessage(ChatColor.YELLOW + minigameName + " is starting!");
     runningGame = game;
-    scoreManager.setMinigameName(runningGame.getName());
-    scoreManager.showMinigameScores();
     runningGame.start();
   }
 
@@ -140,7 +133,6 @@ public class MinigameManager {
           "Minigame " + minigame.getName() + " has already been registered!");
     }
     minigames.put(minigame.getName(), minigame);
-    minigameSections.put(minigame, new HashSet<>());
     cola.updateTabComplete(true, false);
   }
 
@@ -204,8 +196,16 @@ public class MinigameManager {
     return scoreManager;
   }
 
-  public void addMinigameSection(Minigame game, ScoreboardSection section) {
-    minigameSections.get(game).add(section);
-    scoreManager.update();
+  public Collection<MinigamePlayer> getPlayers() {
+    return players.values();
+  }
+
+  public MinigamePlayer getPlayer(Player p) {
+    MinigamePlayer player = players.get(p);
+    if (player == null) {
+      player = new MinigamePlayer(p, this);
+      players.put(p, player);
+    }
+    return player;
   }
 }

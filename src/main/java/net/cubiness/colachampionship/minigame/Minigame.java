@@ -1,15 +1,21 @@
 package net.cubiness.colachampionship.minigame;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
+
+import net.cubiness.colachampionship.scoreboard.section.ScoreboardSection;
 
 public abstract class Minigame {
 
   protected final MinigameAPI api;
-  private final List<Player> players = new ArrayList<>();
+  protected Collection<ScoreboardSection> scoreboard = new HashSet<>();
+  private final List<MinigamePlayer> players = new ArrayList<>();
   private boolean running = false;
 
   public Minigame(MinigameAPI api) {
@@ -17,7 +23,7 @@ public abstract class Minigame {
     api.registerMinigame(this);
   }
 
-  public final void addPlayer(Player p) {
+  public final void addPlayer(MinigamePlayer p) {
     if (!players.contains(p)) {
       players.add(p);
       p.teleport(getLobby());
@@ -25,7 +31,7 @@ public abstract class Minigame {
     }
   }
 
-  public final void removePlayer(Player p) {
+  public final void removePlayer(MinigamePlayer p) {
     if (players.contains(p)) {
       players.remove(p);
       p.teleport(api.getSpawn());
@@ -41,7 +47,7 @@ public abstract class Minigame {
     onStart();
   }
 
-  /***
+  /**
    * Called from ColaCore when a minigame needs to stop
    */
   public final void forceStop() {
@@ -53,7 +59,7 @@ public abstract class Minigame {
     return running;
   }
 
-  protected final Iterator<Player> getPlayers() {
+  protected final Iterator<MinigamePlayer> getPlayers() {
     return players.iterator();
   }
 
@@ -73,11 +79,15 @@ public abstract class Minigame {
     onReset();
   }
 
+  public final Collection<ScoreboardSection> getScoreboard() {
+    return scoreboard;
+  }
+
   protected abstract void onReset();
 
-  protected abstract void onPlayerJoin(Player p);
+  protected abstract void onPlayerJoin(MinigamePlayer p);
 
-  protected abstract void onPlayerLeave(Player p);
+  protected abstract void onPlayerLeave(MinigamePlayer p);
 
   public abstract void onStart();
 

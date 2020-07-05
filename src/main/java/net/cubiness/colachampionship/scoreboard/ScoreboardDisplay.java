@@ -1,11 +1,11 @@
 package net.cubiness.colachampionship.scoreboard;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import net.cubiness.colachampionship.scoreboard.section.ScoreboardSection;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -13,24 +13,27 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
+import net.cubiness.colachampionship.minigame.MinigamePlayer;
+import net.cubiness.colachampionship.scoreboard.section.ScoreboardSection;
+
 public class ScoreboardDisplay {
 
-  private final Scoreboard scoreboard;
+  private final Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
   private final Objective scoreboardObjective;
   private final Map<Integer, String> scoreboardData = new HashMap<>();
-  private final Set<ScoreboardSection> sections = new HashSet<>();
+  private final Collection<ScoreboardSection> sections = new HashSet<>();
+  private final MinigamePlayer player;
 
-  public ScoreboardDisplay() {
-    scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+  public ScoreboardDisplay(MinigamePlayer p) {
+    player = p;
     scoreboardObjective = scoreboard
-        .registerNewObjective("championship", "dummy", "Cola2 Championship");
+        .registerNewObjective(p.getPlayer().getUniqueId().toString().substring(24), "dummy", "Cola2 Championship");
     for (int i = 1; i < 16; i++) {
       String str = new String(new char[i]).replace('\0', ' ');
       scoreboardData.put(i, str);
       scoreboardObjective.getScore(str).setScore(i);
     }
     scoreboardObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
-    Bukkit.getOnlinePlayers().forEach(p -> p.setScoreboard(scoreboard));
   }
 
   private void setRow(int row, String data) {
@@ -43,7 +46,7 @@ public class ScoreboardDisplay {
     scoreboardData.put(row, data);
   }
 
-  public void setSections(Set<ScoreboardSection> newSections) {
+  public void setSections(Collection<ScoreboardSection> newSections) {
     boolean[] filledRows = new boolean[16];
     filledRows[0] = true;
     for (ScoreboardSection s : newSections) {
@@ -56,12 +59,16 @@ public class ScoreboardDisplay {
     }
     sections.clear();
     sections.addAll(newSections);
+    update();
   }
 
   public void update() {
+    for (int i = 1; i < 16; i++) {
+      setRow(i, " ");
+    }
     for (ScoreboardSection s : sections) {
       s.update();
-      List<String> contents = s.getContents();
+      List<String> contents = s.getContents(player);
       int index = 0;
       for (int i = s.getPosition(); i > s.getPosition() - s.getHeight(); i--) {
         setRow(i, contents.get(index));
@@ -74,7 +81,7 @@ public class ScoreboardDisplay {
     scoreboardObjective.setDisplayName(title);
   }
 
-  public void showScoreboard(Player sender) {
-    sender.setScoreboard(scoreboard);
+  public void showScoreboard() {
+    player.getPlayer().setScoreboard(scoreboard);
   }
 }
