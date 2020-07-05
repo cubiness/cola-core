@@ -36,6 +36,12 @@ public class ScoreboardDisplay {
     scoreboardObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
   }
 
+  /**
+   * Used to set a row on the player's scoreboard
+   *
+   * @param row The row to set
+   * @param data The new data to put in that row
+   */
   private void setRow(int row, String data) {
     while (scoreboardData.containsValue(data)) {
       data += " ";
@@ -46,6 +52,12 @@ public class ScoreboardDisplay {
     scoreboardData.put(row, data);
   }
 
+  /**
+   * Used to set the new sections to show the user.
+   * This will validate if the sections overlap.
+   *
+   * @param newSections A collection of ScoreboardSections to use
+   */
   public void setSections(Collection<ScoreboardSection> newSections) {
     boolean[] filledRows = new boolean[16];
     filledRows[0] = true;
@@ -62,6 +74,9 @@ public class ScoreboardDisplay {
     update();
   }
 
+  /**
+   * Used to updated all of the scoreboard sections
+   */
   public void update() {
     for (int i = 1; i < 16; i++) {
       setRow(i, " ");
@@ -77,10 +92,16 @@ public class ScoreboardDisplay {
     }
   }
 
+  /**
+   * Sets the title of the scoreboard
+   */
   public void setTitle(String title) {
     scoreboardObjective.setDisplayName(title);
   }
 
+  /**
+   * Displays the scoreboard to a player
+   */
   public void showScoreboard() {
     player.getPlayer().setScoreboard(scoreboard);
   }

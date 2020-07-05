@@ -17,6 +17,12 @@ public class PacketUtils {
     this.manager = manager;
   }
 
+  /**
+   * Spawns an armor stand at the given location, but just for the one player
+   *
+   * @param p The player that will see the armor stand
+   * @param l The location of the armor stand
+   */
   public int spawnArmorStand(Player p, Location l) {
     PacketContainer packet = new PacketContainer(Server.SPAWN_ENTITY_LIVING);
 

@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import net.cubiness.colachampionship.ColaCore;
@@ -42,16 +41,31 @@ public class ScoreManager {
     readTotals();
   }
 
+  /**
+   * Gives the player points
+   *
+   * @param p The player
+   * @param amount The amount of points to give
+   */
   public void addTotalScore(MinigamePlayer p, int amount) {
     totalPoints.addPoints(p, amount);
     save();
   }
 
+  /**
+   * Sets the points of a player
+   *
+   * @param p The player
+   * @param amount The points to set the player at
+   */
   public void setTotalScore(MinigamePlayer p, int amount) {
     totalPoints.setPoints(p, amount);
     save();
   }
 
+  /**
+   * Will read the total scores from a file
+   */
   private void readTotals() {
     BufferedReader w;
     try {
@@ -74,6 +88,9 @@ public class ScoreManager {
     }
   }
 
+  /**
+   * Will save the total scores from a file
+   */
   public void save() {
     BufferedWriter w;
     try {
@@ -94,16 +111,29 @@ public class ScoreManager {
     }
   }
 
+  /**
+   * Updates the title for the given players
+   *
+   * @param players The players to set the title
+   */
   public void updateTitle(Collection<MinigamePlayer> players) {
     title = title.charAt(title.length() - 1) + title.substring(0, title.length() - 1);
     players.forEach(p -> p.setScoreboardTitle(title));
   }
 
+  /**
+   * Gets the title of the scoreboard
+   */
   public String getTitle() {
     return title;
   }
 
-  public Set<ScoreboardSection> getTotalScoreboard() {
+  /**
+   * Gets a collection of ScoreboardSections that the player should display if they are looking at the total score
+   *
+   * @return The ScoreboardSections
+   */
+  public Collection<ScoreboardSection> getTotalScoreboard() {
     return totalSections;
   }
 }

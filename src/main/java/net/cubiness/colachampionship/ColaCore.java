@@ -147,6 +147,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
           }
           int score = Integer.parseInt(args[2]);
           scoreManager.addTotalScore(minigames.getPlayer(p), score);
+          minigames.updateScoreboard();
         } else if (args[0].equals("remove") && args.length == 3) {
           Player p = Bukkit.getPlayer(args[1]);
           if (p == null) {
@@ -159,6 +160,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
           }
           int score = Integer.parseInt(args[2]);
           scoreManager.addTotalScore(minigames.getPlayer(p), -score);
+          minigames.updateScoreboard();
         } else if (args[0].equals("set") && args.length == 3) {
           Player p = Bukkit.getPlayer(args[1]);
           if (p == null) {
@@ -171,6 +173,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
           }
           int score = Integer.parseInt(args[2]);
           scoreManager.setTotalScore(minigames.getPlayer(p), score);
+          minigames.updateScoreboard();
         } else {
           return false;
         }

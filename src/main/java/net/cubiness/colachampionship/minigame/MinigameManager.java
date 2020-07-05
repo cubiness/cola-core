@@ -173,6 +173,12 @@ public class MinigameManager {
     return minigames.containsKey(name);
   }
 
+  /**
+   * Used to get a minigame object based on a minigame name
+   *
+   * @param name The minigame name
+   * @return The minigame object, if a minigame has been registered with that name
+   */
   public Minigame getMinigame(String name) {
     assert minigames.containsKey(name);
     return minigames.get(name);
@@ -202,10 +208,30 @@ public class MinigameManager {
     return scoreManager;
   }
 
+  /**
+   * Updates the scoreboard for all players
+   */
+  public void updateScoreboard() {
+    players.values().forEach(p -> {
+      p.updateScoreboard();
+    });
+  }
+
+  /**
+   * Gets all players in the server, represented by a MinigamePlayer
+   *
+   * @return A collection of minigamePlayers
+   */
   public Collection<MinigamePlayer> getPlayers() {
     return players.values();
   }
 
+  /**
+   * Gets a minigamePlayer based on a spigot Player object
+   *
+   * @param p The player
+   * @return The player represented by a minigamePlayer
+   */
   public MinigamePlayer getPlayer(Player p) {
     MinigamePlayer player = players.get(p);
     if (player == null) {
