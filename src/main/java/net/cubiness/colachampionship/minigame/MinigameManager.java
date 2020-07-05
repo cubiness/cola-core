@@ -1,5 +1,6 @@
 package net.cubiness.colachampionship.minigame;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import net.cubiness.colachampionship.ColaCore;
+import net.cubiness.colachampionship.minigame.config.ConfigManager;
 import net.cubiness.colachampionship.scoreboard.ScoreManager;
 
 public class MinigameManager {
@@ -20,12 +22,15 @@ public class MinigameManager {
   private final Map<Player, MinigamePlayer> players = new HashMap<>();
   private final ScoreManager scoreManager;
   private final MinigameAPI api = new MinigameAPI(this);
+  private final ConfigManager config;
   private final ColaCore cola;
   private Minigame runningGame;
 
   public MinigameManager(ColaCore cola, ScoreManager scoreManager) {
     this.cola = cola;
     this.scoreManager = scoreManager;
+    config = new ConfigManager(this);
+    config.load(new File(cola.getDataFolder(), "minigames"));
     Bukkit.getScheduler().scheduleSyncRepeatingTask(cola, () -> scoreManager.updateTitle(getPlayers()), 5, 5);
   }
 
