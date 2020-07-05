@@ -20,6 +20,14 @@ commands:
     description: Puts all players into a minigame
     permission: cc.joinall
     usage: /joinall <minigame>
+  join:
+    description: Puts the players into a minigame
+    permission: cc.join
+    usage: /join <minigame>
+  leave:
+    description: Removes the player from a minigame
+    permission: cc.leave
+    usage: /leave
   updatescoreboard:
     description: Fixes scoreboard
     permission: cc.updatescoreboard
@@ -37,6 +45,12 @@ permissions:
   cc.joinall:
     description: Permission to send all players minigame
     default: op
+  cc.join:
+    description: Permission to join a minigame
+    default: true
+  cc.leave:
+    description: Permission to leave a minigame
+    default: true
   cc.updatescorebord:
     description: Permission to fix scoreboard
     default: op

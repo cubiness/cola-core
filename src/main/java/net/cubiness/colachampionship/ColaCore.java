@@ -44,6 +44,8 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("score").setTabCompleter(tabComplete);
     getCommand("showscore").setTabCompleter(tabComplete);
     getCommand("joinall").setTabCompleter(tabComplete);
+    getCommand("join").setTabCompleter(tabComplete);
+    getCommand("leave").setTabCompleter(tabComplete);
     getCommand("updatescoreboard").setTabCompleter(tabComplete);
     tabComplete.addCompletion("minigame",
         Collections.emptyList(),
@@ -64,6 +66,9 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
           Arrays.asList("start"),
           minigames.getMinigameList());
       tabComplete.addCompletion("joinall",
+          Collections.emptyList(),
+          minigames.getMinigameList());
+      tabComplete.addCompletion("join",
           Collections.emptyList(),
           minigames.getMinigameList());
       tabComplete.addCompletion("showscore",
@@ -219,6 +224,46 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
           return false;
         }
       }
+    } else if (label.equals("join")) {
+      if (!sender.hasPermission("cc.join")) {
+        sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
+      } else {
+        if (!(sender instanceof Player)) {
+          sender.sendMessage(ChatColor.RED + "Only players can run this command!");
+        }
+        if (args.length == 1) {
+          Player player = (Player) sender;
+          MinigamePlayer p = minigames.getPlayer(player);
+          if (minigames.running()) {
+            sender.sendMessage(ChatColor.RED + "There is already a minigame in progress!");
+          } else if (minigames.hasMinigame(args[0])) {
+            minigames.join(minigames.getMinigame(args[0]), p);
+          } else {
+            sender.sendMessage(ChatColor.RED + "Minigame " + args[0] + " has not been registered!");
+          }
+        } else {
+          return false;
+        }
+      }
+    } else if (label.equals("leave")) {
+      if (!sender.hasPermission("cc.leave")) {
+        sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
+      } else {
+        if (!(sender instanceof Player)) {
+          sender.sendMessage(ChatColor.RED + "Only players can run this command!");
+        }
+        if (args.length == 0) {
+          Player player = (Player) sender;
+          MinigamePlayer p = minigames.getPlayer(player);
+          if (p.getCurrentMinigame() == null) {
+            sender.sendMessage(ChatColor.RED + "You are not in a minigame right now!");
+          } else {
+            minigames.leave(p);
+          }
+        } else {
+          return false;
+        }
+      }
     } else if (label.equals("joinall")) {
       if (!sender.hasPermission("cc.joinall")) {
         sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
@@ -227,7 +272,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
           if (minigames.running()) {
             sender.sendMessage(ChatColor.RED + "There is already a minigame in progress!");
           } else if (minigames.hasMinigame(args[0])) {
-            minigames.addAll(args[0]);
+            minigames.joinAll(minigames.getMinigame(args[0]));
           } else {
             sender
                 .sendMessage(ChatColor.RED + "Minigame " + args[0] + " has not been registered!");

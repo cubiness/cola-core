@@ -43,16 +43,12 @@ public class MinigameManager {
 
   /**
    * Called when an operator adds all players to a minigame
-   * @param minigameName The minigame to add everyone to
+   *
+   * @param game The minigame to add everyone to
    */
-  public void addAll(String minigameName) {
-    if (runningGame != null) {
-      throw new RuntimeException("Minigame " + runningGame.getName() + " is already running!");
-    }
-    if (!minigames.containsKey(minigameName)) {
-      throw new RuntimeException("Minigame " + minigameName + " has not been registered!");
-    }
-    Minigame game = minigames.get(minigameName);
+  public void joinAll(Minigame game) {
+    assert runningGame == null;
+    assert minigames.containsValue(game);
     Bukkit.getOnlinePlayers().forEach(p -> {
       MinigamePlayer player = players.get(p);
       if (player == null) {
@@ -63,20 +59,31 @@ public class MinigameManager {
         player.leaveCurrentMinigame();
       }
       player.setCurrentMinigame(game);
-      minigames.get(minigameName).addPlayer(player);
     });
   }
 
   /**
-   * Called when a player leaves a minigame
-   * @param p The player
-   * @return true if the player was in a minigame, false if otherwise
+   * Called when a player tries to join a minigame
+   *
+   * @param game The minigame to join
    */
-  public boolean onPlayerLeaveMinigame(Player p) {
-    if (players.get(p) == null) {
-      players.put(p, new MinigamePlayer(p, this));
+  public void join(Minigame game, MinigamePlayer player) {
+    assert runningGame == null;
+    assert minigames.containsValue(game);
+    if (player.getCurrentMinigame() != null) {
+      player.leaveCurrentMinigame();
     }
-    return players.get(p).leaveCurrentMinigame();
+    player.setCurrentMinigame(game);
+  }
+
+  /**
+   * Called when a player tries to leave a minigame
+   *
+   * @param game The minigame to join
+   */
+  public void leave(MinigamePlayer player) {
+    assert runningGame == null;
+    player.leaveCurrentMinigame();
   }
 
   /**
@@ -84,7 +91,7 @@ public class MinigameManager {
    * @param p The player that is leaving
    */
   public void onPlayerLeaveServer(Player p) {
-    onPlayerLeaveMinigame(p);
+    leave(getPlayer(p));
     players.remove(p);
   }
 

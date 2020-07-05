@@ -55,6 +55,7 @@ public class MinigamePlayer {
     if (currentMinigame == null) {
       return false;
     } else {
+      player.sendMessage(ChatColor.GREEN + "Leaving " + currentMinigame.getName());
       currentMinigame.removePlayer(this);
       currentMinigame = null;
       return true;
