@@ -15,9 +15,9 @@ public class ConfigUtils {
     if (values.size() != 4) {
       throw new RuntimeException("Invalid location string!");
     }
-    return new Location(Bukkit.getWorld(values.get(0)),
-        Float.parseFloat(values.get(1)),
-        Float.parseFloat(values.get(2)), 
-        Float.parseFloat(values.get(3)));
+    return new Location(Bukkit.getWorld(values.get(0).trim()),
+        Float.parseFloat(values.get(1).trim()),
+        Float.parseFloat(values.get(2).trim()),
+        Float.parseFloat(values.get(3).trim()));
   }
 }
