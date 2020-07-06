@@ -29,6 +29,12 @@ public class ConfigManager {
     });
   }
 
+  public Config loadFile(File path) {
+    assert path != null;
+    assert path.isFile();
+    return new Config(this, path);
+  }
+
   /**
    * Checks if there is a config for the minigame name
    *

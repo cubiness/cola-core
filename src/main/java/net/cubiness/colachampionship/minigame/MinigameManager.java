@@ -13,7 +13,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import net.cubiness.colachampionship.ColaCore;
+import net.cubiness.colachampionship.minigame.config.Config;
 import net.cubiness.colachampionship.minigame.config.ConfigManager;
+import net.cubiness.colachampionship.minigame.config.ConfigUtils;
 import net.cubiness.colachampionship.scoreboard.ScoreManager;
 
 public class MinigameManager {
@@ -22,20 +24,22 @@ public class MinigameManager {
   private final Map<Player, MinigamePlayer> players = new HashMap<>();
   private final ScoreManager scoreManager;
   private final MinigameAPI api = new MinigameAPI(this);
-  private final ConfigManager config;
   private final ColaCore cola;
   private Minigame runningGame;
+  private final ConfigManager configManager;
+  private final Config config;
 
   public MinigameManager(ColaCore cola, ScoreManager scoreManager) {
     this.cola = cola;
     this.scoreManager = scoreManager;
-    config = new ConfigManager(this);
-    config.load(new File(cola.getDataFolder(), "minigames"));
+    configManager = new ConfigManager(this);
+    configManager.load(new File(cola.getDataFolder(), "minigames"));
+    config = configManager.loadFile(new File(cola.getDataFolder(), "hub.conf"));
     Bukkit.getScheduler().scheduleSyncRepeatingTask(cola, () -> scoreManager.updateTitle(getPlayers()), 5, 5);
   }
 
   public ConfigManager getConfigs() {
-    return config;
+    return configManager;
   }
 
   /**
@@ -177,7 +181,7 @@ public class MinigameManager {
    * @return The location of the lobby
    */
   public Location getSpawn() {
-    return new Location(Bukkit.getWorld("world"), 0, 201, 0);
+    return ConfigUtils.locationFromString(config.get("lobby"));
   }
 
   /**
