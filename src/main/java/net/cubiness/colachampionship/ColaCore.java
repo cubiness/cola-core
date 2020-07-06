@@ -40,12 +40,16 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     scoreManager = new ScoreManager(this);
     minigames = new MinigameManager(this, scoreManager);
     tabComplete = new TabCompleteManager();
+    getCommand("cola").setTabCompleter(tabComplete);
     getCommand("minigame").setTabCompleter(tabComplete);
     getCommand("score").setTabCompleter(tabComplete);
     getCommand("showscore").setTabCompleter(tabComplete);
     getCommand("joinall").setTabCompleter(tabComplete);
     getCommand("join").setTabCompleter(tabComplete);
     getCommand("leave").setTabCompleter(tabComplete);
+    tabComplete.addCompletion("cola",
+        Collections.emptyList(),
+        Arrays.asList("reload"));
     tabComplete.addCompletion("minigame",
         Collections.emptyList(),
         Arrays.asList("start", "stop"));
@@ -107,7 +111,22 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    if (label.equals("minigame")) {
+    if (label.equals("cola")) {
+      if (!sender.hasPermission("cc.admin")) {
+        sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
+      } else {
+        if (args.length == 1) {
+          if (args[0].equals("reload")) {
+            minigames.reload();
+            sender.sendMessage(ChatColor.YELLOW + "Reloaded ColaCore configs!");
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      }
+    } else if (label.equals("minigame")) {
       if (!sender.hasPermission("cc.minigame")) {
         sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
       } else {

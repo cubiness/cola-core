@@ -32,7 +32,14 @@ commands:
     description: Teleports you to the hub
     permission: cc.hub
     usage: /hub
+  cola:
+    description: ColaCore admin commands
+    permission: cc.admin
+    usage: /cola [reload]
 permissions:
+  cc.admin:
+    description: ColaCore admin commands
+    default: op
   cc.minigame:
     description: Permission to run /minigame
     default: op

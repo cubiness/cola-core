@@ -27,7 +27,7 @@ public class MinigameManager {
   private final ColaCore cola;
   private Minigame runningGame;
   private final ConfigManager configManager;
-  private final Config config;
+  private Config config;
 
   public MinigameManager(ColaCore cola, ScoreManager scoreManager) {
     this.cola = cola;
@@ -52,6 +52,14 @@ public class MinigameManager {
     minigames.clear();
     players.clear();
     runningGame = null;
+  }
+
+  /**
+   * Called when trying to reload configs
+   */
+  public void reload() {
+    configManager.load(new File(cola.getDataFolder(), "minigames"));
+    config = configManager.loadFile(new File(cola.getDataFolder(), "hub.conf"));
   }
 
   /**
