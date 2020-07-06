@@ -28,10 +28,10 @@ commands:
     description: Removes the player from a minigame
     permission: cc.leave
     usage: /leave
-  updatescoreboard:
-    description: Fixes scoreboard
-    permission: cc.updatescoreboard
-    usage: /updatescoreboard
+  hub:
+    description: Teleports you to the hub
+    permission: cc.hub
+    usage: /hub
 permissions:
   cc.minigame:
     description: Permission to run /minigame
@@ -51,6 +51,6 @@ permissions:
   cc.leave:
     description: Permission to leave a minigame
     default: true
-  cc.updatescorebord:
-    description: Permission to fix scoreboard
-    default: op
+  cc.hub:
+    description: Permission to teleport to hub
+    default: true

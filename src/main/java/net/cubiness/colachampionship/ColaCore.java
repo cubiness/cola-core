@@ -46,7 +46,6 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("joinall").setTabCompleter(tabComplete);
     getCommand("join").setTabCompleter(tabComplete);
     getCommand("leave").setTabCompleter(tabComplete);
-    getCommand("updatescoreboard").setTabCompleter(tabComplete);
     tabComplete.addCompletion("minigame",
         Collections.emptyList(),
         Arrays.asList("start", "stop"));
@@ -212,18 +211,6 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
            return false;
          }
        }
-    } else if (label.equals("updatescoreboard")) {
-      if (!sender.hasPermission("cc.updatescorebord")) {
-        sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
-      } else {
-        if (args.length == 0) {
-          Bukkit.getOnlinePlayers().forEach(p -> {
-            //display.showScoreboard(p);
-          });
-        } else {
-          return false;
-        }
-      }
     } else if (label.equals("join")) {
       if (!sender.hasPermission("cc.join")) {
         sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
@@ -276,6 +263,25 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
           } else {
             sender
                 .sendMessage(ChatColor.RED + "Minigame " + args[0] + " has not been registered!");
+          }
+        } else {
+          return false;
+        }
+      }
+    } else if (label.equals("hub")) {
+      if (!sender.hasPermission("cc.hub")) {
+        sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
+      } else {
+        if (!(sender instanceof Player)) {
+          sender.sendMessage(ChatColor.RED + "Only players can run this command!");
+        }
+        if (args.length == 0) {
+          Player player = (Player) sender;
+          MinigamePlayer p = minigames.getPlayer(player);
+          if (p.getCurrentMinigame() == null) {
+            p.teleport(minigames.getSpawn());
+          } else {
+            minigames.leave(p);
           }
         } else {
           return false;
