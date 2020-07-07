@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import net.cubiness.colachampionship.minigame.config.Config;
 import net.cubiness.colachampionship.minigame.config.ConfigUtils;
@@ -79,6 +80,21 @@ public abstract class Minigame {
   }
 
   /**
+   * Checks if the players map contains the given player
+   *
+   * @param p The player to check
+   * @return true if they are in the minigame, false if otherwise
+   */
+  public boolean hasPlayer(Player p) {
+    for (MinigamePlayer player : players) {
+      if (player.getPlayer().getUniqueId() == p.getUniqueId()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Getter to get a list of players that are in this game
    *
    * @return An iterator for all players current in the game or it's lobby
@@ -119,7 +135,7 @@ public abstract class Minigame {
   /**
    * Called from ColaCore when it needs to display the scoreboard ofr this minigame
    *
-   * @return A Collection<ScoreboardSection> that will be used to display the scoreboard of the side
+   * @return A Collection of ScoreboardSection that will be used to display the scoreboard of the side
    */
   public final Collection<ScoreboardSection> getScoreboard() {
     return scoreboard;
@@ -136,6 +152,15 @@ public abstract class Minigame {
       throw new RuntimeException("Please set a value for 'lobby' in the config " + getName() + ".conf");
     }
     return ConfigUtils.locationFromString(str);
+  }
+
+  /**
+   * Gets the config for ths minigame
+   *
+   * @return The Config object
+   */
+  public final Config getConfig() {
+     return config;
   }
 
   /**

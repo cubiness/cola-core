@@ -41,7 +41,7 @@ public class MinigameAPI {
    * Called from another plugin, when the minigame has finished
    * This will fail an assert if the minigame passed in is now running
    *
-   * @param minigame The minigame that has finished running
+   * @param game The minigame that has finished running
    */
   public void finish(Minigame game) {
     manager.finish(game);

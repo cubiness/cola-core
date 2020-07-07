@@ -87,6 +87,7 @@ public class MinigameManager {
    * Called when a player tries to join a minigame
    *
    * @param game The minigame to join
+   * @param player The player that is joining
    */
   public void join(Minigame game, MinigamePlayer player) {
     assert runningGame == null;
@@ -100,7 +101,7 @@ public class MinigameManager {
   /**
    * Called when a player tries to leave a minigame
    *
-   * @param game The minigame to join
+   * @param player The player who is leaving
    */
   public void leave(MinigamePlayer player) {
     assert runningGame == null;
