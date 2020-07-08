@@ -113,6 +113,10 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     return packetUtils;
   }
 
+  public HologramManager getHologramManager() {
+    return holograms;
+  }
+
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if (label.equals("cola")) {
