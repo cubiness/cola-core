@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 import net.cubiness.colachampionship.ColaCore;
 import net.cubiness.colachampionship.minigame.MinigamePlayer;
@@ -65,16 +64,22 @@ public class HologramManager {
     return packetUtils;
   }
 
+  private void removeHologram(MinigamePlayer p, Hologram holo) {
+    if (holograms.containsKey(p) && holograms.get(p).contains(holo)) {
+      holograms.get(p).remove(holo);
+    }
+  }
+
   public static class Hologram {
     private final int id;
     private final HologramManager manager;
-    private final Player player;
+    private final MinigamePlayer player;
     private String name;
 
     private Hologram(int id, MinigamePlayer player, HologramManager manager) {
       this.id = id;
       this.manager = manager;
-      this.player = player.getPlayer();
+      this.player = player;
     }
 
     /**
@@ -85,7 +90,15 @@ public class HologramManager {
      */
     public void setName(String newName) {
       name = newName;
-      manager.getPacketUtils().setMarkerArmorstand(player, id, name);
+      manager.getPacketUtils().setMarkerArmorstand(player.getPlayer(), id, name);
+    }
+
+    /**
+     * Removes this hologram from the player
+     */
+    public void remove() {
+      manager.getPacketUtils().destroyEntity(player.getPlayer(), id);
+      manager.removeHologram(player, this);
     }
   }
 }
