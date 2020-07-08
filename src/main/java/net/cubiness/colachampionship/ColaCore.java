@@ -25,6 +25,7 @@ import net.cubiness.colachampionship.minigame.MinigameAPI;
 import net.cubiness.colachampionship.minigame.MinigameManager;
 import net.cubiness.colachampionship.minigame.MinigamePlayer;
 import net.cubiness.colachampionship.scoreboard.ScoreManager;
+import net.cubiness.colachampionship.utils.HologramManager;
 import net.cubiness.colachampionship.utils.PacketUtils;
 
 public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
@@ -33,6 +34,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
   private MinigameManager minigames;
   private TabCompleteManager tabComplete;
   private PacketUtils packetUtils;
+  private HologramManager holograms;
 
   @Override
   public void onEnable() {
@@ -40,6 +42,9 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     scoreManager = new ScoreManager(this);
     minigames = new MinigameManager(this, scoreManager);
     tabComplete = new TabCompleteManager();
+    packetUtils = new PacketUtils(ProtocolLibrary.getProtocolManager());
+    holograms = new HologramManager(this);
+
     getCommand("cola").setTabCompleter(tabComplete);
     getCommand("minigame").setTabCompleter(tabComplete);
     getCommand("score").setTabCompleter(tabComplete);
@@ -60,7 +65,6 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
         Collections.emptyList(),
         Arrays.asList("total", "minigame"));
     updateTabComplete(false, true);
-    packetUtils = new PacketUtils(ProtocolLibrary.getProtocolManager());
   }
 
   public void updateTabComplete(boolean newMinigames, boolean newPlayers) {
@@ -112,6 +116,10 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if (label.equals("cola")) {
+      Player p = (Player) sender;
+      MinigamePlayer player = minigames.getPlayer(p);
+      holograms.add(player, p.getLocation(), "Hello xd lmao");
+
       if (!sender.hasPermission("cc.admin")) {
         sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
       } else {
@@ -324,6 +332,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
 
   @EventHandler
   public void onPlayerLeave(PlayerQuitEvent e) {
+    holograms.removePlayer(minigames.getPlayer(e.getPlayer()));
     Bukkit.getScheduler().runTaskLater(this, () -> {
       updateTabComplete(false, true);
     }, 1);
