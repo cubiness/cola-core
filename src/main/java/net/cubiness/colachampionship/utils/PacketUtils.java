@@ -80,4 +80,22 @@ public class PacketUtils {
       e.printStackTrace();
     }
   }
+
+  /**
+   * Destroys the entity with the given id for the given player.
+   *
+   * @param player The player that can "see" this entity
+   * @param id The entity id of the entity that should disapear
+   */
+  public void destroyEntity(Player player, int id) {
+    PacketContainer packet = new PacketContainer(Server.ENTITY_DESTROY);
+
+    packet.getIntegerArrays().write(0, new int[]{id});
+
+    try {
+      manager.sendServerPacket(player, packet);
+    } catch (InvocationTargetException e) {
+      e.printStackTrace();
+    }
+  }
 }
