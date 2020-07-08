@@ -69,7 +69,7 @@ public class PacketUtils {
     metadata.setObject(new WrappedDataWatcherObject(3, Registry.get(Boolean.class)),
         true);
     metadata.setObject(new WrappedDataWatcherObject(14, Registry.get(Byte.class)),
-        (byte) 0b00001010);
+        (byte) 0b00010000);
 
     packet.getIntegers().write(0, id); // entity id
     packet.getWatchableCollectionModifier().write(0, metadata.getWatchableObjects()); // the metadata
