@@ -1,6 +1,7 @@
 package net.cubiness.colachampionship.minigame;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import net.cubiness.colachampionship.minigame.config.Config;
 
@@ -54,5 +55,15 @@ public class MinigameAPI {
    */
   public Location getSpawn() {
     return manager.getSpawn();
+  }
+
+  /**
+   * Gets the MinigamePlayer for the given player
+   *
+   * @param player The player
+   * @return The minigame player
+   */
+  public MinigamePlayer getMinigamePlayer(Player player) {
+    return manager.getPlayer(player);
   }
 }
