@@ -120,10 +120,6 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if (label.equals("cola")) {
-      Player p = (Player) sender;
-      MinigamePlayer player = minigames.getPlayer(p);
-      holograms.add(player, p.getLocation(), "Hello xd lmao");
-
       if (!sender.hasPermission("cc.admin")) {
         sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
       } else {
