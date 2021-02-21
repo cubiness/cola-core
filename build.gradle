@@ -19,8 +19,8 @@ repositories {
 }
 
 dependencies {
-  compileOnly 'org.spigotmc:spigot-api:1.15.2-R0.1-SNAPSHOT'
-  compileOnly 'com.comphenix.protocol:ProtocolLib:4.5.0'
+  compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+  compileOnly 'com.comphenix.protocol:ProtocolLib:4.6.0'
 }
 
 jar {
