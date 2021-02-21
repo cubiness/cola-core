@@ -7,35 +7,35 @@ commands:
   minigame:
     description: Set cola championship minigame
     permission: cc.minigame
-    usage: /minigame (start <minigame> | stop)
+    usage: /<command> (start <minigame> | stop)
   score:
     description: Alter score of player in cola championship
     permission: cc.score
-    usage: /score <add | remove | set> <username> <value>
+    usage: /<command> <add | remove | set> <username> <value>
   showscore:
     description: Shows the minigame or total score for all players
     permission: cc.showscore
-    usage: /showscore (total | minigame <minigame>)
+    usage: /<command> (total | minigame <minigame>)
   joinall:
     description: Puts all players into a minigame
     permission: cc.joinall
-    usage: /joinall <minigame>
+    usage: /<command> <minigame>
   join:
     description: Puts the players into a minigame
     permission: cc.join
-    usage: /join <minigame>
+    usage: /<command> <minigame>
   leave:
     description: Removes the player from a minigame
     permission: cc.leave
-    usage: /leave
+    usage: /<command>
   hub:
     description: Teleports you to the hub
     permission: cc.hub
-    usage: /hub
+    usage: /<command>
   cola:
     description: ColaCore admin commands
     permission: cc.admin
-    usage: /cola [reload]
+    usage: /<command> [reload]
 permissions:
   cc.admin:
     description: ColaCore admin commands
