@@ -32,8 +32,7 @@ public class MinigameManager {
   public MinigameManager(ColaCore cola, ScoreManager scoreManager) {
     this.cola = cola;
     this.scoreManager = scoreManager;
-    configManager = new ConfigManager(this);
-    configManager.load(new File(cola.getDataFolder(), "minigames"));
+    configManager = new ConfigManager(this, new File(cola.getDataFolder(), "minigames"));
     config = configManager.loadFile(new File(cola.getDataFolder(), "hub.conf"));
     Bukkit.getScheduler().scheduleSyncRepeatingTask(cola, () -> scoreManager.updateTitle(getPlayers()), 5, 5);
   }
@@ -58,7 +57,7 @@ public class MinigameManager {
    * Called when trying to reload configs
    */
   public void reload() {
-    configManager.load(new File(cola.getDataFolder(), "minigames"));
+    configManager.reload();
     config = configManager.loadFile(new File(cola.getDataFolder(), "hub.conf"));
   }
 
