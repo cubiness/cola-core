@@ -1,9 +1,8 @@
 package net.cubiness.colachampionship.minigame;
 
 import org.bukkit.Location;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-
-import net.cubiness.colachampionship.minigame.config.Config;
 
 public class MinigameAPI {
 
@@ -27,7 +26,7 @@ public class MinigameAPI {
    *
    * @param minigame The minigame
    */
-  public Config getConfig(Minigame minigame) {
+  public YamlConfiguration getConfig(Minigame minigame) {
     return manager.getConfigs().get(minigame.getName());
   }
 

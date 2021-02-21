@@ -6,13 +6,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.cubiness.colachampionship.ColaCore;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import net.cubiness.colachampionship.minigame.MinigameManager;
 
 public class ConfigManager {
   private final File path;
   private final MinigameManager minigames;
-  private final Map<String, Config> configs = new HashMap<>();
+  private final Map<String, YamlConfiguration> configs = new HashMap<>();
 
   public ConfigManager(MinigameManager minigames, File path) {
     this.minigames = minigames;
@@ -31,7 +33,25 @@ public class ConfigManager {
       path.mkdir();
     }
     Arrays.asList(path.listFiles()).forEach(f -> {
-      configs.put(f.getName().split("\\.")[0], new Config(this, f));
+      YamlConfiguration c = new YamlConfiguration();
+      try {
+        c.load(f);
+      } catch (InvalidConfigurationException e) {
+        throw new RuntimeException("Invalid configuration file:", e);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      configs.put(f.getName().split("\\.")[0], c);
+    });
+  }
+
+  public void save() {
+    configs.forEach((k, v) -> {
+      try {
+        v.save(new File(path, k + ".yml"));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     });
   }
 
@@ -54,19 +74,11 @@ public class ConfigManager {
    * @param minigame The name of the minigame
    * @return The config for that minigame
    */
-  public Config get(String minigame) {
+  public YamlConfiguration get(String minigame) {
     if (configs.containsKey(minigame)) {
       return configs.get(minigame);
     } else {
-      File f = new File(path, minigame + ".conf");
-      if (!f.exists()) {
-        try {
-          f.createNewFile();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-      Config c = new Config(this, f);
+      YamlConfiguration c = new YamlConfiguration();
       configs.put(minigame, c);
       return c;
     }

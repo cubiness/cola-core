@@ -6,11 +6,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import net.cubiness.colachampionship.minigame.config.Config;
-import net.cubiness.colachampionship.minigame.config.ConfigUtils;
 import net.cubiness.colachampionship.scoreboard.section.ScoreboardSection;
 
 public abstract class Minigame {
@@ -19,7 +19,7 @@ public abstract class Minigame {
   protected Collection<ScoreboardSection> scoreboard = new HashSet<>();
   private final List<MinigamePlayer> players = new ArrayList<>();
   private boolean running = false;
-  private final Config config;
+  private final YamlConfiguration config;
 
   public Minigame(MinigameAPI api) {
     this.api = api;
@@ -147,11 +147,12 @@ public abstract class Minigame {
    * @return The location of the lobby
    */
   public final Location getLobby() {
-    String str = config.get("lobby");
-    if (str == null) {
-      throw new RuntimeException("Please set a value for 'lobby' in the config " + getName() + ".conf");
+    Location loc = config.getLocation("lobby");
+    if (loc == null) {
+      config.set("lobby", new Location(Bukkit.getWorld("world"), 0, 100, 0));
+      throw new RuntimeException("Please set a value for 'lobby' in the config " + getName() + ".yml");
     }
-    return ConfigUtils.locationFromString(str);
+    return loc;
   }
 
   /**
@@ -159,7 +160,7 @@ public abstract class Minigame {
    *
    * @return The Config object
    */
-  public final Config getConfig() {
+  public final YamlConfiguration getConfig() {
      return config;
   }
 
