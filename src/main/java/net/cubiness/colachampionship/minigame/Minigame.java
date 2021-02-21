@@ -6,11 +6,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import net.cubiness.colachampionship.ColaCore;
 import net.cubiness.colachampionship.scoreboard.section.ScoreboardSection;
 
 public abstract class Minigame {
@@ -149,8 +149,8 @@ public abstract class Minigame {
   public final Location getLobby() {
     Location loc = config.getLocation("lobby");
     if (loc == null) {
-      config.set("lobby", new Location(Bukkit.getWorld("world"), 0, 100, 0));
-      throw new RuntimeException("Please set a value for 'lobby' in the config " + getName() + ".yml");
+      loc = api.getCore().getServer().getWorld("world").getSpawnLocation();
+      config.set("lobby", loc);
     }
     return loc;
   }

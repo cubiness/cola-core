@@ -4,12 +4,23 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import net.cubiness.colachampionship.ColaCore;
+
 public class MinigameAPI {
 
   private final MinigameManager manager;
 
   public MinigameAPI(MinigameManager manager) {
     this.manager = manager;
+  }
+
+  /**
+   * Returns the ColaCore plugin instance.
+   *
+   * @return The ColaCore plugin.
+   */
+  public ColaCore getCore() {
+    return manager.getCore();
   }
 
   /**

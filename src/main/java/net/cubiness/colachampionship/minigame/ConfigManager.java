@@ -1,4 +1,4 @@
-package net.cubiness.colachampionship.minigame.config;
+package net.cubiness.colachampionship.minigame;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,10 +53,6 @@ public class ConfigManager {
         e.printStackTrace();
       }
     });
-  }
-
-  public Config loadFile(File path) {
-    return new Config(this, path);
   }
 
   /**

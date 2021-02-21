@@ -10,12 +10,10 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import net.cubiness.colachampionship.ColaCore;
-import net.cubiness.colachampionship.minigame.config.Config;
-import net.cubiness.colachampionship.minigame.config.ConfigManager;
-import net.cubiness.colachampionship.minigame.config.ConfigUtils;
 import net.cubiness.colachampionship.scoreboard.ScoreManager;
 
 public class MinigameManager {
@@ -27,13 +25,13 @@ public class MinigameManager {
   private final ColaCore cola;
   private Minigame runningGame;
   private final ConfigManager configs;
-  private Config config;
+  private YamlConfiguration config;
 
   public MinigameManager(ColaCore cola, ScoreManager scoreManager) {
     this.cola = cola;
     this.scoreManager = scoreManager;
     configs = new ConfigManager(this, new File(cola.getDataFolder(), "minigames"));
-    config = configs.loadFile(new File(cola.getDataFolder(), "hub.conf"));
+    config = configs.get("hub");
     Bukkit.getScheduler().scheduleSyncRepeatingTask(cola, () -> scoreManager.updateTitle(getPlayers()), 5, 5);
   }
 
@@ -59,7 +57,7 @@ public class MinigameManager {
    */
   public void reload() {
     configs.reload();
-    config = configs.loadFile(new File(cola.getDataFolder(), "hub.yml"));
+    config = configs.get("hub");
   }
 
   /**
@@ -190,7 +188,12 @@ public class MinigameManager {
    * @return The location of the lobby
    */
   public Location getSpawn() {
-    return ConfigUtils.locationFromString(config.get("lobby"));
+    Location loc = config.getLocation("lobby");
+    if (loc == null) {
+      loc = cola.getServer().getWorld("world").getSpawnLocation();
+      config.set("lobby", loc);
+    }
+    return loc;
   }
 
   /**
@@ -268,5 +271,14 @@ public class MinigameManager {
       players.put(p, player);
     }
     return player;
+  }
+
+  /**
+   * Returns the ColaCore plugin instance.
+   *
+   * @return The ColaCore plugin.
+   */
+  public ColaCore getCore() {
+    return cola;
   }
 }
