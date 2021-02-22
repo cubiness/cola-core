@@ -69,6 +69,7 @@ public abstract class Minigame {
    */
   public final void finish() {
     running = false;
+    onFinish();
     manager.finish(this);
   }
 
@@ -197,9 +198,14 @@ public abstract class Minigame {
   protected abstract void onStart();
 
   /**
-   * Called from the minigame when the minigame is getting force stopped
+   * Called from the minigame when the minigame is getting force stopped.
    */
   protected abstract void onForceStop();
+
+  /**
+   * Called from the minigame when the minigame is over.
+   */
+  protected abstract void onFinish();
 
   /**
    * Called from ColaCore when registering the minigame
