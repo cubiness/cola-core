@@ -7,7 +7,7 @@ commands:
   minigame:
     description: Set cola championship minigame
     permission: cc.minigame
-    usage: /<command> (start <minigame> | stop)
+    usage: /<command> <start <minigame> | stop>
   score:
     description: Alter score of player in cola championship
     permission: cc.score
@@ -15,7 +15,7 @@ commands:
   showscore:
     description: Shows the minigame or total score for all players
     permission: cc.showscore
-    usage: /<command> (total | minigame <minigame>)
+    usage: /<command> <total | minigame <minigame>>
   joinall:
     description: Puts all players into a minigame
     permission: cc.joinall
@@ -35,7 +35,7 @@ commands:
   cola:
     description: ColaCore admin commands
     permission: cc.admin
-    usage: /<command> [reload]
+    usage: /<command> <reload | save>
 permissions:
   cc.admin:
     description: ColaCore admin commands
