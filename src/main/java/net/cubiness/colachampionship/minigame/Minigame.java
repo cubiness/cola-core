@@ -57,7 +57,7 @@ public abstract class Minigame {
   }
 
   /**
-   * Called from ColaCore when a minigame needs to start
+   * Called from ColaCore when a minigame needs to start.
    */
   public final void start() {
     running = true;
@@ -65,7 +65,16 @@ public abstract class Minigame {
   }
 
   /**
-   * Called from ColaCore when a minigame needs to stop
+   * Called from the minigame when the game has ended.
+   * This will never be called from ColaCore.
+   */
+  public final void finish() {
+    running = false;
+    api.finish(this);
+  }
+
+  /**
+   * Called from ColaCore when a minigame needs to stop.
    */
   public final void forceStop() {
     running = false;

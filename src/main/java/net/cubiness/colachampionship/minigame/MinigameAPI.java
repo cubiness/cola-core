@@ -49,11 +49,11 @@ public class MinigameAPI {
   }
 
   /**
-   * Called from another plugin, when the minigame has finished
+   * Called from Minigame, when the minigame has finished
    *
    * @param game The minigame that has finished running
    */
-  public void finish(Minigame game) {
+  protected void finish(Minigame game) {
     manager.finish(game);
   }
 
