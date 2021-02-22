@@ -53,7 +53,7 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("leave").setTabCompleter(tabComplete);
     tabComplete.addCompletion("cola",
         Collections.emptyList(),
-        Arrays.asList("reload"));
+        Arrays.asList("reload", "save"));
     tabComplete.addCompletion("minigame",
         Collections.emptyList(),
         Arrays.asList("start", "stop"));
@@ -126,6 +126,9 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
           if (args[0].equals("reload")) {
             minigames.reload();
             sender.sendMessage(ChatColor.YELLOW + "Reloaded ColaCore configs!");
+          } else if (args[0].equals("save")) {
+            minigames.getConfigs().save();
+            sender.sendMessage(ChatColor.YELLOW + "Saved all configs to disk");
           } else {
             return false;
           }
