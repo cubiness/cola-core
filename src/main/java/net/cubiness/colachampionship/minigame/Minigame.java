@@ -75,7 +75,7 @@ public abstract class Minigame {
   /**
    * Getter to see if this minigame is running
    */
-  protected final boolean isRunning() {
+  public final boolean isRunning() {
     return running;
   }
 
