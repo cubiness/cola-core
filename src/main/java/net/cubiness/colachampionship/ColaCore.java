@@ -21,7 +21,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.comphenix.protocol.ProtocolLibrary;
 
 import net.cubiness.colachampionship.commands.TabCompleteManager;
-import net.cubiness.colachampionship.minigame.MinigameAPI;
 import net.cubiness.colachampionship.minigame.MinigameManager;
 import net.cubiness.colachampionship.minigame.MinigamePlayer;
 import net.cubiness.colachampionship.scoreboard.ScoreManager;
@@ -101,10 +100,6 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
     }
   }
 
-  public MinigameAPI getAPI() {
-    return minigames.getAPI();
-  }
-
   public TabCompleteManager getTabComplete() {
     return tabComplete;
   }
@@ -115,6 +110,10 @@ public class ColaCore extends JavaPlugin implements Listener, CommandExecutor {
 
   public HologramManager getHologramManager() {
     return holograms;
+  }
+
+  public MinigameManager getMinigames() {
+    return minigames;
   }
 
   @Override

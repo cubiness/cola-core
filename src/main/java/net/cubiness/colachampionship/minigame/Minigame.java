@@ -10,21 +10,20 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import net.cubiness.colachampionship.ColaCore;
 import net.cubiness.colachampionship.scoreboard.section.ScoreboardSection;
 
 public abstract class Minigame {
 
-  protected final MinigameAPI api;
+  protected final MinigameManager manager;
   protected Collection<ScoreboardSection> scoreboard = new HashSet<>();
   private final List<MinigamePlayer> players = new ArrayList<>();
   private boolean running = false;
   private final YamlConfiguration config;
 
-  public Minigame(MinigameAPI api) {
-    this.api = api;
-    api.registerMinigame(this);
-    config = api.getConfig(this);
+  public Minigame(MinigameManager manager) {
+    this.manager = manager;
+    manager.registerMinigame(this);
+    config = manager.getConfigs().get(getName());
     if (config == null) {
       throw new RuntimeException("Cannot load config for minigame " + getName());
     }
@@ -51,7 +50,7 @@ public abstract class Minigame {
   public final void removePlayer(MinigamePlayer p) {
     if (players.contains(p)) {
       players.remove(p);
-      p.teleport(api.getSpawn());
+      p.teleport(manager.getSpawn());
       onPlayerLeave(p);
     }
   }
@@ -70,7 +69,7 @@ public abstract class Minigame {
    */
   public final void finish() {
     running = false;
-    api.finish(this);
+    manager.finish(this);
   }
 
   /**
@@ -158,7 +157,7 @@ public abstract class Minigame {
   public final Location getLobby() {
     Location loc = config.getLocation("lobby");
     if (loc == null) {
-      loc = api.getCore().getServer().getWorld("world").getSpawnLocation();
+      loc = manager.getCore().getServer().getWorld("world").getSpawnLocation();
       config.set("lobby", loc);
     }
     return loc;
@@ -170,7 +169,7 @@ public abstract class Minigame {
    * @return The Config object
    */
   public final YamlConfiguration getConfig() {
-     return config;
+    return config;
   }
 
   /**

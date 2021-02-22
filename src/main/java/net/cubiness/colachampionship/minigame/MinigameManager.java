@@ -21,7 +21,6 @@ public class MinigameManager {
   private final Map<String, Minigame> minigames = new HashMap<>();
   private final Map<Player, MinigamePlayer> players = new HashMap<>();
   private final ScoreManager scoreManager;
-  private final MinigameAPI api = new MinigameAPI(this);
   private final ColaCore cola;
   private Minigame runningGame;
   private final ConfigManager configs;
@@ -145,10 +144,6 @@ public class MinigameManager {
       p.leaveCurrentMinigame();
     }
     runningGame = null;
-  }
-
-  public MinigameAPI getAPI() {
-    return api;
   }
 
   /**

@@ -1,15 +1,16 @@
 package net.cubiness.colachampionship.scoreboard.section;
 
-import net.cubiness.colachampionship.ColaCore;
-import net.cubiness.colachampionship.minigame.MinigameAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import net.cubiness.colachampionship.ColaCore;
+import net.cubiness.colachampionship.minigame.MinigameManager;
+
 public class TimerSection extends ScoreboardSection {
 
   private final Plugin plugin;
-  private final MinigameAPI api;
+  private final MinigameManager manager;
   public int secondsLeft;
   private int startTime;
   private BukkitTask timerCountID;
@@ -20,7 +21,7 @@ public class TimerSection extends ScoreboardSection {
     this.plugin = plugin;
     secondsLeft = startSeconds;
     startTime = startSeconds;
-    api = ((ColaCore) Bukkit.getPluginManager().getPlugin("ColaCore")).getAPI();
+    manager = ((ColaCore) Bukkit.getPluginManager().getPlugin("ColaCore")).getMinigames();
   }
 
   public void onFinish(Runnable task) {
@@ -37,7 +38,7 @@ public class TimerSection extends ScoreboardSection {
 
   private void decreaseTime() {
     secondsLeft -= 1;
-    api.updateScoreboard();
+    manager.updateScoreboard();
     if (secondsLeft <= 0) {
       stop();
       onFinishTask.run();
