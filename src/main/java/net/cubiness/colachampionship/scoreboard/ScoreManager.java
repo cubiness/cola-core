@@ -53,6 +53,17 @@ public class ScoreManager {
   }
 
   /**
+   * Gives the player points
+   *
+   * @param id The UUID of a player
+   * @param amount The amount of points to give
+   */
+  public void addTotalScore(UUID id, int amount) {
+    totalPoints.addPoints(id, amount);
+    save();
+  }
+
+  /**
    * Sets the points of a player
    *
    * @param p The player
@@ -60,6 +71,17 @@ public class ScoreManager {
    */
   public void setTotalScore(MinigamePlayer p, int amount) {
     totalPoints.setPoints(p, amount);
+    save();
+  }
+
+  /**
+   * Sets the points of a player
+   *
+   * @param id The UUID of a player
+   * @param amount The points to set the player at
+   */
+  public void setTotalScore(UUID id, int amount) {
+    totalPoints.setPoints(id, amount);
     save();
   }
 
